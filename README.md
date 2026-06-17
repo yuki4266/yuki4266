@@ -8,3 +8,5 @@
     <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg">
   </picture>
 </div>
+
+<!-- nudge re-detect 2026-06-17T23:47:33Z -->
