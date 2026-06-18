@@ -53,6 +53,13 @@
 
 <br/>
 
+<!-- ============ 3D Contributions ============ -->
+<div align="center">
+  <img width="90%" alt="3D contribution calendar" src="https://raw.githubusercontent.com/yuki4266/yuki4266/main/profile-3d-contrib/profile-green-animate.svg" />
+</div>
+
+<br/>
+
 <!-- ============ Activity Graph ============ -->
 <div align="center">
 
