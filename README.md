@@ -20,14 +20,7 @@
 <!-- ============ Tech Stack ============ -->
 <div align="center">
 
-![TypeScript](https://img.shields.io/badge/TypeScript-F5F6F8?style=flat-square&logo=typescript&logoColor=3178C6)
-![JavaScript](https://img.shields.io/badge/JavaScript-F5F6F8?style=flat-square&logo=javascript&logoColor=E6B800)
-![HTML5](https://img.shields.io/badge/HTML5-F5F6F8?style=flat-square&logo=html5&logoColor=E34F26)
-![CSS3](https://img.shields.io/badge/CSS3-F5F6F8?style=flat-square&logo=css3&logoColor=1572B6)
-![React](https://img.shields.io/badge/React-F5F6F8?style=flat-square&logo=react&logoColor=149ECA)
-![Node.js](https://img.shields.io/badge/Node.js-F5F6F8?style=flat-square&logo=nodedotjs&logoColor=339933)
-![Git](https://img.shields.io/badge/Git-F5F6F8?style=flat-square&logo=git&logoColor=F05032)
-![VS Code](https://img.shields.io/badge/VS%20Code-F5F6F8?style=flat-square&logo=visualstudiocode&logoColor=007ACC)
+<img src="https://skillicons.dev/icons?i=ts,js,html,css,react,nodejs,git,vscode&theme=light" alt="tech stack" />
 
 </div>
 
