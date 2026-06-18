@@ -39,33 +39,9 @@
 
 <br/>
 
-<!-- ============ Summary Cards ============ -->
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/yuki4266/yuki4266/main/profile-summary-card-output/graywhite/4-productive-time.svg" />
-<img src="https://raw.githubusercontent.com/yuki4266/yuki4266/main/profile-summary-card-output/graywhite/2-most-commit-language.svg" />
-
-</div>
-
-<br/>
-
 <!-- ============ Snake ============ -->
 <div align="center">
   <img alt="contribution snake" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg" />
-</div>
-
-<br/>
-
-<!-- ============ Pacman (alt to snake) ============ -->
-<div align="center">
-  <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output-pacman/pacman-contribution-graph.svg" />
-</div>
-
-<br/>
-
-<!-- ============ 3D Contributions ============ -->
-<div align="center">
-  <img width="90%" alt="3D contribution calendar" src="https://raw.githubusercontent.com/yuki4266/yuki4266/main/profile-3d-contrib/profile-green-animate.svg" />
 </div>
 
 <br/>
@@ -76,13 +52,6 @@
 [![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=yuki4266&bg_color=FFFFFF&color=F4795B&line=F4795B&point=333333&area=true&area_color=FCE3DA&title_color=F4795B&hide_border=true)](https://github.com/yuki4266)
 
 </div>
-
-<!-- ============ Metrics (big panel) ============ -->
-<div align="center">
-  <img width="92%" alt="metrics" src="https://raw.githubusercontent.com/yuki4266/yuki4266/main/metrics.svg" />
-</div>
-
-<br/>
 
 <!-- ============ Footer ============ -->
 <div align="center">
