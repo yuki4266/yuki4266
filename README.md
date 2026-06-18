@@ -57,15 +57,6 @@
 
 </div>
 
-<!-- ===================== 奖杯墙 ===================== -->
-<h2 align="center">🏆 成就 · Trophies</h2>
-
-<div align="center">
-
-[![trophy](https://github-profile-trophy.vercel.app/?username=yuki4266&theme=tokyonight&no-frame=true&column=7&margin-w=8)](https://github.com/ryo-ma/github-profile-trophy)
-
-</div>
-
 <!-- ===================== 贪吃蛇 ===================== -->
 <h2 align="center">🐍 贡献贪吃蛇 · Contribution Snake</h2>
 
