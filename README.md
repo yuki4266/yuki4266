@@ -44,15 +44,6 @@
   <img alt="contribution snake" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg" />
 </div>
 
-<br/>
-
-<!-- ============ Activity Graph ============ -->
-<div align="center">
-
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=yuki4266&bg_color=FFFFFF&color=F4795B&line=F4795B&point=333333&area=true&area_color=FCE3DA&title_color=F4795B&hide_border=true)](https://github.com/yuki4266)
-
-</div>
-
 <!-- ============ Footer ============ -->
 <div align="center">
 
