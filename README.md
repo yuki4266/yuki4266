@@ -11,7 +11,7 @@
 <!-- ============ About ============ -->
 <div align="center">
 
-`Building things for the web` &nbsp;•&nbsp; `Learning every day` &nbsp;•&nbsp; `yuki@anyura.com`
+`Building things for the web` &nbsp;•&nbsp; `Learning every day`
 
 </div>
 
