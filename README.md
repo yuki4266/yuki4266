@@ -1,3 +1,6 @@
+<!-- ============ Wave Header ============ -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:FBC7B3,100:F4795B&height=130&section=header" />
+
 <!-- ============ Header ============ -->
 <div align="center">
 
@@ -63,3 +66,5 @@
 ![Profile Views](https://komarev.com/ghpvc/?username=yuki4266&label=Profile%20views&color=F4795B&style=flat)
 
 </div>
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:FBC7B3,100:F4795B&height=120&section=footer" />
