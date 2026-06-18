@@ -1,85 +1,65 @@
-<!-- ===================== 顶部打字动画 ===================== -->
+<!-- ============ Header ============ -->
 <div align="center">
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=800&color=7AA2F7&center=true&vCenter=true&width=600&lines=Hi+there+%F0%9F%91%8B+I'm+yuki4266;Frontend+%2F+TypeScript+Developer;Always+learning%2C+always+building)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&size=26&duration=3200&pause=900&color=F4795B&center=true&vCenter=true&width=520&lines=Hi+there%2C+I'm+yuki4266+%F0%9F%91%8B;Frontend+%26+TypeScript+Developer;Always+learning%2C+always+building)](https://github.com/yuki4266)
 
 </div>
 
-<!-- ===================== 简介 ===================== -->
-<h2 align="center">关于我 · About Me</h2>
-
-<table align="center">
-  <tr>
-    <td>
-
-- 🔭 我正在做：**`← 你的项目/方向，比如：前端 & 全栈开发`**
-- 🌱 我正在学：**`← 比如：React / Node / 系统设计`**
-- 💬 找我聊：**`← 你擅长/感兴趣的话题`**
-- 📫 联系我：**yuki@anyura.com**
-- ⚡ 一句话：**`← 一句你喜欢的座右铭`**
-
-    </td>
-  </tr>
-</table>
-
-<!-- ===================== 技能徽章 ===================== -->
-<h2 align="center">🛠️ 技术栈 · Tech Stack</h2>
-
+<!-- ============ About ============ -->
 <div align="center">
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
-
-<sub><i>← 不需要的徽章直接删行，想加的去 shields.io 找 logo 名照抄</i></sub>
+`Building things for the web` &nbsp;•&nbsp; `Learning every day` &nbsp;•&nbsp; `yuki@anyura.com`
 
 </div>
 
-<!-- ===================== GitHub 统计 ===================== -->
-<h2 align="center">📊 GitHub 数据 · Stats</h2>
+<br/>
 
+<!-- ============ Tech Stack ============ -->
 <div align="center">
 
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=yuki4266&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&hide_border=true" />
-<img height="180em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&theme=tokyonight&hide_border=true" />
+![TypeScript](https://img.shields.io/badge/TypeScript-F5F6F8?style=flat-square&logo=typescript&logoColor=3178C6)
+![JavaScript](https://img.shields.io/badge/JavaScript-F5F6F8?style=flat-square&logo=javascript&logoColor=E6B800)
+![HTML5](https://img.shields.io/badge/HTML5-F5F6F8?style=flat-square&logo=html5&logoColor=E34F26)
+![CSS3](https://img.shields.io/badge/CSS3-F5F6F8?style=flat-square&logo=css3&logoColor=1572B6)
+![React](https://img.shields.io/badge/React-F5F6F8?style=flat-square&logo=react&logoColor=149ECA)
+![Node.js](https://img.shields.io/badge/Node.js-F5F6F8?style=flat-square&logo=nodedotjs&logoColor=339933)
+![Git](https://img.shields.io/badge/Git-F5F6F8?style=flat-square&logo=git&logoColor=F05032)
+![VS Code](https://img.shields.io/badge/VS%20Code-F5F6F8?style=flat-square&logo=visualstudiocode&logoColor=007ACC)
 
 </div>
 
-<!-- ===================== 常用语言 ===================== -->
+<br/>
+
+<!-- ============ Stats ============ -->
 <div align="center">
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&theme=tokyonight&hide_border=true&langs_count=8" />
+<img height="170em" src="https://github-readme-stats.vercel.app/api?username=yuki4266&show_icons=true&include_all_commits=true&count_private=true&bg_color=FFFFFF&title_color=F4795B&text_color=555555&icon_color=F4795B&border_color=EAEAEA" />
+&nbsp;
+<img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&background=FFFFFF&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333&stroke=EAEAEA&border=EAEAEA" />
+
+<img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&langs_count=8&bg_color=FFFFFF&title_color=F4795B&text_color=555555&border_color=EAEAEA" />
 
 </div>
 
-<!-- ===================== 贪吃蛇 ===================== -->
-<h2 align="center">🐍 贡献贪吃蛇 · Contribution Snake</h2>
+<br/>
 
+<!-- ============ Snake ============ -->
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg">
-    <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg">
-  </picture>
+  <img alt="contribution snake" src="https://raw.githubusercontent.com/yuki4266/yuki4266/output/github-contribution-grid-snake.svg" />
 </div>
 
-<!-- ===================== 活动折线图 ===================== -->
-<h2 align="center">📈 活动趋势 · Activity Graph</h2>
+<br/>
 
+<!-- ============ Activity Graph ============ -->
 <div align="center">
 
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=yuki4266&theme=tokyo-night&hide_border=true&area=true)](https://github.com/Ashutosh00710/github-readme-activity-graph)
+[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=yuki4266&bg_color=FFFFFF&color=F4795B&line=F4795B&point=333333&area=true&area_color=FCE3DA&title_color=F4795B&hide_border=true)](https://github.com/yuki4266)
 
 </div>
 
-<!-- ===================== 访客计数 ===================== -->
+<!-- ============ Footer ============ -->
 <div align="center">
 
-![Profile Views](https://komarev.com/ghpvc/?username=yuki4266&label=Profile%20Views&color=7AA2F7&style=flat)
+![Profile Views](https://komarev.com/ghpvc/?username=yuki4266&label=Profile%20views&color=F4795B&style=flat)
 
 </div>
