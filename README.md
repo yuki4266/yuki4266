@@ -33,11 +33,11 @@
 <!-- ============ Stats ============ -->
 <div align="center">
 
-<img height="170em" src="https://github-readme-stats.vercel.app/api?username=yuki4266&show_icons=true&include_all_commits=true&count_private=true&bg_color=FFFFFF&title_color=F4795B&text_color=555555&icon_color=F4795B&border_color=EAEAEA" />
+<img height="170em" src="https://github-readme-stats.vercel.app/api?username=yuki4266&show_icons=true&count_private=true&hide_border=true&bg_color=00000000&title_color=F4795B&text_color=555555&icon_color=F4795B" />
 &nbsp;
-<img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&background=FFFFFF&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333&stroke=EAEAEA&border=EAEAEA" />
+<img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&hide_border=true&background=00000000&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333" />
 
-<img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&langs_count=8&bg_color=FFFFFF&title_color=F4795B&text_color=555555&border_color=EAEAEA" />
+<img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&langs_count=8&hide_border=true&bg_color=00000000&title_color=F4795B&text_color=555555" />
 
 </div>
 
