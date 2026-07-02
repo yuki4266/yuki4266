@@ -17,6 +17,14 @@
     </linearGradient>
   </defs>
 
+  <!-- sun (day only; the night variant swaps in a moon here) -->
+  <!--SUN--><g transform="translate(846,38)">
+    <circle r="26" fill="#FFD9A0" opacity="0.16"><animate attributeName="opacity" values="0.1;0.22;0.1" keyTimes="0;0.5;1" dur="6s" repeatCount="indefinite"/></circle>
+    <circle r="17" fill="#FFD9A0" opacity="0.28"/>
+    <g opacity="0.7"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(0)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(45)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(90)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(135)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(180)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(225)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(270)"/><path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate(315)"/></g>
+    <circle r="9.5" fill="#FFC069"/><circle r="9.5" fill="#FFE3B8" opacity="0.5"/>
+  </g><!--/SUN-->
+
   <!-- soft ground -->
   <ellipse cx="450" cy="314" rx="480" ry="30" fill="#FBC7B3" opacity="0.18"/>
 

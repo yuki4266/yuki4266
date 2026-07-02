@@ -17,6 +17,9 @@
     </linearGradient>
   </defs>
 
+  <!-- sun (day only; the night variant swaps in a moon here) -->
+  
+
   <!-- soft ground -->
   <ellipse cx="450" cy="314" rx="480" ry="30" fill="#FFD0BE" opacity="0.18"/>
 
