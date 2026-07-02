@@ -32,6 +32,7 @@
 
 <!-- ============ Footer ============ -->
 <div align="center">
+  <img src="garden-footer.svg" width="900" alt="garden footer" />
 
 ![Profile Views](https://komarev.com/ghpvc/?username=yuki4266&label=Profile%20views&color=F4795B&style=flat)
 
