@@ -1,18 +1,6 @@
-<!-- ============ Wave Header ============ -->
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:FBC7B3,100:F4795B&height=130&section=header" />
-
-<!-- ============ Header ============ -->
+<!-- ============ Bloom Header ============ -->
 <div align="center">
-
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Poppins&size=26&duration=3200&pause=900&color=F4795B&center=true&vCenter=true&width=520&lines=Hi+there%2C+I'm+yuki4266+%F0%9F%91%8B;Frontend+%26+TypeScript+Developer;Always+learning%2C+always+building)](https://github.com/yuki4266)
-
-</div>
-
-<!-- ============ About ============ -->
-<div align="center">
-
-`Building things for the web` &nbsp;•&nbsp; `Learning every day`
-
+  <img src="bloom-header.svg" width="900" alt="yuki4266 — blooming banner" />
 </div>
 
 <br/>
