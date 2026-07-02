@@ -8,7 +8,15 @@
 <!-- ============ Tech Stack ============ -->
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=ts,js,html,css,react,nodejs,git,vscode&theme=light" alt="tech stack" />
+<img src="https://img.shields.io/badge/LangGraph-E2542F?style=for-the-badge&logo=langgraph&logoColor=white" alt="LangGraph" />
+<img src="https://img.shields.io/badge/LangChain-F4795B?style=for-the-badge&logo=langchain&logoColor=white" alt="LangChain" />
+<img src="https://img.shields.io/badge/Ollama-2D2320?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama" />
+<img src="https://img.shields.io/badge/Claude-D97757?style=for-the-badge&logo=claude&logoColor=white" alt="Claude" />
+<img src="https://img.shields.io/badge/Hugging%20Face-FBC7B3?style=for-the-badge&logo=huggingface&logoColor=black" alt="Hugging Face" />
+
+<br/><br/>
+
+<img src="https://skillicons.dev/icons?i=py,pytorch,fastapi,ts,react,docker,linux,git,vscode&theme=light" alt="tools" />
 
 </div>
 
@@ -17,11 +25,9 @@
 <!-- ============ Stats ============ -->
 <div align="center">
 
-<img height="170em" src="https://github-readme-stats.vercel.app/api?username=yuki4266&show_icons=true&count_private=true&hide_border=true&bg_color=00000000&title_color=F4795B&text_color=555555&icon_color=F4795B" />
-&nbsp;
 <img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&hide_border=true&background=00000000&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333" />
 
-<img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&langs_count=8&hide_border=true&bg_color=00000000&title_color=F4795B&text_color=555555" />
+<img src="github-metrics.svg" alt="GitHub metrics" />
 
 </div>
 
