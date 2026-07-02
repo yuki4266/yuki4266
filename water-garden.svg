@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 80" width="900" height="80" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">
+<title>community garden</title>
+<text x="450" y="24" text-anchor="middle" font-size="14" fill="#F4795B">🌱 这块地还空着 — 做第一个浇水的园丁?</text>
+<g transform="translate(450,68)"><path d="M0 0 Q-2 -8 0 -14" stroke="#7FA36B" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M0 -10 Q-8 -12 -10 -20 Q-3 -18 0 -10 Z" fill="#8CB07A"/><path d="M0 -12 Q8 -14 10 -22 Q3 -20 0 -12 Z" fill="#8CB07A"><animateTransform attributeName="transform" type="rotate" values="-4;4;-4" keyTimes="0;0.5;1" dur="3s" repeatCount="indefinite"/></path></g>
+</svg>
