@@ -224,7 +224,7 @@ def cat_head(blink=False, twitch=False):
            '<animate attributeName="ry" values="1.1;1.1;0.12;1.1" keyTimes="0;0.88;0.94;1" dur="5.2s" repeatCount="indefinite"/>'
            '</ellipse>') if blink else f'<circle cx="-4.8" cy="-1.7" r="1.1" fill="{PEACH}"/>'
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
-                f'keyTimes="0;0.505;0.513;0.521;0.529;0.537;1" {CYC}/>') if twitch else ''
+                f'keyTimes="0;0.522;0.53;0.538;0.546;0.554;1" {CYC}/>') if twitch else ''
     return (f'<path d="M-9 0.6 L-15.5 -0.8 M-8.8 2.4 L-15 3 M-8.4 4 L-14 5.4" stroke="{C}" stroke-width="0.7" opacity="0.55" fill="none"/>'
             f'<g>{ear_anim}<path d="M-7 -3 L-8.6 -12.6 L-1.8 -6.9 Z" fill="{C}"/>'
             f'<path d="M-6.6 -5 L-7.4 -10.4 L-4 -7.2 Z" fill="{PEACH}" opacity="0.55"/></g>'
@@ -273,7 +273,7 @@ def cat_pose_dash():
 
 def cat_pose_sit():
     look = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;-14;-14;0;0" '
-            f'keyTimes="0;0.477;0.485;0.495;0.503;1" {CYC}/>')
+            f'keyTimes="0;0.492;0.50;0.51;0.518;1" {CYC}/>')
     return ('<g>'
             f'<g transform="translate(12,-2)"><path d="M0 0 C 3 2.5 -1 4.2 -7 4 C -13.5 3.8 -18 2.2 -19.5 0.2" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round">'.replace("{C}", C)
             + f'<animateTransform attributeName="transform" type="rotate" values="0;0;7;0;0" keyTimes="0;0.7;0.79;0.88;1" dur="6s" repeatCount="indefinite"/></path></g>'
@@ -334,6 +334,24 @@ def cat_pose_reach():
             '</g>')
 
 
+def cat_pose_jump_up():
+    """Airborne, rising: body stretched vertical, hind legs trailing behind, forepaws reaching."""
+    return ('<g>'
+            f'<g transform="translate(7,-7)"><path d="M0 0 C 4 4 4.5 10 1 14" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round"/></g>'
+            + slim_leg(-1, -5, -4, 7, 3.3)
+            + slim_leg(4, -4.5, 8, 8, 3.3, True)
+            + f'<path d="M-5.5 -8 C -8.5 -14 -8 -25 -3.5 -31.5 C -0.5 -35.5 5 -35 7.5 -30.5 C 10.5 -25 10 -14 7 -7 C 5.5 -3.8 2.5 -3 -0.5 -4 Z" fill="{C}"/>'
+            + slim_leg(-4.5, -30, -8.5, -43, 3.2)
+            + slim_leg(5, -30, 8, -43.5, 3.2, True)
+            + f'<g transform="translate(-2,-36) rotate(-22)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_fall():
+    """Airborne, descending: tilted nose-down, forelegs extended as landing gear."""
+    return cat_pose_pounce().replace('rotate(-16)', 'rotate(14)', 1)
+
+
 def cat_pose_stand():
     return ('<g>'
             + slim_leg(-8, -11, -8.5, 0, 3.4) + slim_leg(-5, -11, -4.5, 0, 3.4, True)
@@ -352,21 +370,31 @@ def cat_show(season):
             f'calcMode="discrete" {CYC}/>' + '{body}</g>')
     walk = pose.format(v="0;1;0", k="0;0.04;0.15", body=cat_pose_walk())
     dash = pose.format(v="0;1;0;1;0", k="0;0.235;0.30;0.60;0.70", body=cat_pose_dash())
-    crouch = pose.format(v="0;1;0;1;0;1;0", k="0;0.15;0.20;0.34;0.37;0.405;0.435", body=cat_pose_crouch())
+    # landing compression is played by the crouch pose right after each touchdown
+    crouch = pose.format(v="0;1;0;1;0;1;0;1;0", k="0;0.15;0.20;0.34;0.37;0.405;0.435;0.475;0.49",
+                         body=cat_pose_crouch())
     pounce = pose.format(v="0;1;0", k="0;0.20;0.235",
                          body=('<g><animateTransform attributeName="transform" type="translate" '
-                               f'values="0 0;0 0;0 -30;0 0;0 0" keyTimes="0;0.20;0.2175;0.235;1" {CYC}/>'
-                               + cat_pose_pounce() + '</g>'))
+                               f'values="0 0;0 0;0 -30;0 0;0 0" keyTimes="0;0.20;0.2175;0.235;1" '
+                               'calcMode="spline" keySplines="0 0 1 1;0.12 0.88 0.34 1;0.62 0 0.95 0.45;0 0 1 1" '
+                               f'{CYC}/>' + cat_pose_pounce() + '</g>'))
     stand = pose.format(v="0;1;0", k="0;0.30;0.34", body=cat_pose_stand())
-    jump1 = pose.format(v="0;1;0", k="0;0.37;0.405",
-                        body=('<g><animateTransform attributeName="transform" type="translate" '
-                              f'values="0 0;0 0;0 -50;0 0;0 0" keyTimes="0;0.37;0.3875;0.405;1" {CYC}/>'
-                              + cat_pose_reach() + '</g>'))
-    jump2 = pose.format(v="0;1;0", k="0;0.435;0.475",
-                        body=('<g><animateTransform attributeName="transform" type="translate" '
-                              f'values="0 0;0 0;0 -66;0 0;0 0" keyTimes="0;0.435;0.455;0.475;1" {CYC}/>'
-                              + cat_pose_reach() + '</g>'))
-    sit = pose.format(v="0;1;0", k="0;0.475;0.55", body=cat_pose_sit())
+
+    def jump(t0, apex, t1, h):
+        """Real cat ballistics: explosive launch, hang at apex, accelerating fall;
+        rising pose (stretched, paws up) swaps to falling pose (nose-down) past the apex."""
+        arc = ('<animateTransform attributeName="transform" type="translate" '
+               f'values="0 0;0 0;0 {-(h - 3)};0 {-h};0 {-(h - 2)};0 0;0 0" '
+               f'keyTimes="0;{t0};{apex - 0.0035:.4f};{apex};{apex + 0.0035:.4f};{t1};1" '
+               'calcMode="spline" keySplines="0 0 1 1;0.1 0.9 0.3 1;0.4 0 0.6 1;0.4 0 0.6 1;0.6 0 1 0.4;0 0 1 1" '
+               f'{CYC}/>')
+        rise = pose.format(v="0;1;0", k=f"0;{t0};{apex}", body=cat_pose_jump_up())
+        fall = pose.format(v="0;1;0", k=f"0;{apex};{t1}", body=cat_pose_fall())
+        return f'<g>{arc}{rise}{fall}</g>'
+
+    jump1 = jump(0.37, 0.386, 0.405, 50)
+    jump2 = jump(0.435, 0.456, 0.475, 66)
+    sit = pose.format(v="0;1;0", k="0;0.49;0.55", body=cat_pose_sit())
     stretch = pose.format(v="0;1;0", k="0;0.55;0.60", body=cat_pose_stretch())
     flyby = ""
     if season != "winter":
