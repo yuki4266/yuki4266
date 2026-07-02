@@ -16,6 +16,9 @@ LAT, LON = 35.99, -78.90  # Durham, NC
 TZ = "America/New_York"
 STATE = ".github/scene-state"
 SPLINE2 = 'calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"'
+CYC = 'dur="120s" begin="-20s" repeatCount="indefinite"'  # master cat cycle
+C = "#3B2F2A"
+PEACH = "#FBC7B3"
 
 # ---------------- night support ----------------
 NIGHT_MAP = {
@@ -25,14 +28,17 @@ NIGHT_MAP = {
     "#F4B183": "#FFD9A8", "#F4A05B": "#FFC069", "#A33D22": "#C9744F",
     "#7FA36B": "#8FAE7E", "#8CB07A": "#9CBE8B", "#A8C79A": "#B5D3A7",
     "#3B2F2A": "#A99C90",
-    # seasonal greens / autumn ochres / winter palettes
     "#5E8B4F": "#6E8F60", "#6FA35E": "#7FA36B", "#87B573": "#93AF80",
     "#C98F4E": "#8F6E45", "#B57B3F": "#7E5A34", "#D9A863": "#9C7E52",
     "#C46A38": "#8F5230", "#D98E4A": "#9C6C3E",
     "#9AA79A": "#707D70", "#B3BDB3": "#828E82", "#8B978B": "#667266",
-    # weather furniture
-    "#C9D2DE": "#4E5866", "#98A5B8": "#566274", "#8FA8C4": "#6E87A3",
-    "#B9C2CE": "#525C68", "#EDF2F7": "#B9C7D6",
+    # weather furniture (day -> night)
+    "#CBD5E1": "#4E5866", "#9FB0C2": "#3E4754",
+    "#8E9DB2": "#566274", "#6C7B92": "#454F60",
+    "#B7C2D2": "#5A6675", "#93A2B8": "#49535F",
+    "#707E94": "#3C4656", "#525F75": "#303A4A",
+    "#8FA8C4": "#6E87A3", "#9FACBC": "#525C68",
+    "#C4D2E0": "#E9F0F8", "#B9C9DA": "#DCE7F2", "#EDF2F7": "#B9C7D6",
 }
 
 
@@ -78,79 +84,216 @@ def current_season():
     return "spring" if m in (3, 4, 5) else "summer" if m in (6, 7, 8) else "autumn" if m in (9, 10, 11) else "winter"
 
 
-# ---------------- shared parts ----------------
-def butterfly(path, dur):
-    return ('<g opacity="0">'
-            f'<animate attributeName="opacity" values="0;0.95;0.95;0" keyTimes="0;0.05;0.95;1" dur="{dur}s" begin="1s" repeatCount="indefinite"/>'
-            f'<g><animateMotion dur="{dur}s" begin="1s" repeatCount="indefinite" rotate="auto" path="{path}"/>'
+# ---------------- weather visuals ----------------
+CLOUD = ('M-38 8 C -44 8 -48 3 -46 -2 C -44.5 -6 -40 -8 -36 -7 C -35 -13 -28 -16.5 -21 -15 '
+         'C -18 -20.5 -9 -22 -3 -18.5 C 2 -22 11 -21 15 -16.5 C 22 -18 30 -14 31 -8 '
+         'C 36 -7.5 39 -3 37.5 1.5 C 36 6.5 31 8 27 8 Z')
+
+
+def cloud_anim(y, sc, fill, shade, op, dur, beg):
+    return (f'<g opacity="{op}"><g>'
+            f'<animateTransform attributeName="transform" type="translate" values="-180 {y};1000 {y}" dur="{dur}s" begin="{beg}s" repeatCount="indefinite"/>'
+            f'<g transform="scale({sc})"><path d="{CLOUD}" fill="{fill}"/>'
+            f'<ellipse cx="-4" cy="5" rx="34" ry="5" fill="{shade}" opacity="0.3"/></g></g></g>')
+
+
+def sun():
+    rays = "".join(f'<path d="M0 -15 L2.1 -23 L-2.1 -23 Z" fill="#FFC069" transform="rotate({a})"/>' for a in range(0, 360, 45))
+    return ('<g transform="translate(52,27)">'
+            '<circle r="25" fill="#FFD9A0" opacity="0.18"><animate attributeName="opacity" values="0.12;0.24;0.12" keyTimes="0;0.5;1" dur="5s" repeatCount="indefinite"/></circle>'
+            '<circle r="17" fill="#FFD9A0" opacity="0.28"/>'
+            f'<g opacity="0.75"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="80s" repeatCount="indefinite"/>{rays}</g>'
+            '<circle r="9.5" fill="#FFC069"/><circle r="9.5" fill="#FFE3B8" opacity="0.5"/></g>')
+
+
+def clouds_for(w, rnd):
+    if w == "clouds":
+        cols = ("#CBD5E1", "#9FB0C2")
+        cfg = [(20, 0.62, 0.55, 96, -30), (14, 0.95, 0.7, 74, -60), (28, 0.78, 0.62, 84, -12)]
+    elif w in ("rain",):
+        cols = ("#8E9DB2", "#6C7B92")
+        cfg = [(12, 0.85, 0.75, 80, -20), (18, 1.1, 0.85, 62, -48), (10, 0.7, 0.7, 92, -70)]
+    elif w == "snow":
+        cols = ("#B7C2D2", "#93A2B8")
+        cfg = [(12, 0.9, 0.7, 88, -30), (18, 0.8, 0.65, 70, -58)]
+    elif w == "storm":
+        cols = ("#707E94", "#525F75")
+        cfg = [(10, 1.0, 0.9, 66, -18), (16, 1.25, 0.95, 52, -40), (8, 0.8, 0.85, 76, -62)]
+    else:
+        return ""
+    return "".join(cloud_anim(y, sc, cols[0], cols[1], op, dur, beg) for (y, sc, op, dur, beg) in cfg)
+
+
+def rain_anim(rnd, H):
+    out = []
+    for _ in range(26):
+        x = rnd.randint(0, 900)
+        dur = rnd.uniform(0.8, 1.2)
+        out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -14;0 {H + 16}" dur="{dur:.2f}s" begin="{-rnd.uniform(0, 1.2):.2f}s" repeatCount="indefinite"/>'
+                   f'<line x1="{x}" y1="0" x2="{x - 3.5}" y2="9" stroke="#8FA8C4" stroke-width="1" stroke-linecap="round" opacity="0.35"/></g>')
+    for _ in range(20):
+        x = rnd.randint(0, 900)
+        dur = rnd.uniform(0.6, 0.95)
+        out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -20;0 {H + 22}" dur="{dur:.2f}s" begin="{-rnd.uniform(0, 1):.2f}s" repeatCount="indefinite"/>'
+                   f'<line x1="{x}" y1="0" x2="{x - 6}" y2="16" stroke="#8FA8C4" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/></g>')
+    return "".join(out)
+
+
+def snow_anim(rnd, H):
+    out = []
+    for _ in range(16):
+        x = rnd.randint(0, 900)
+        dx = rnd.choice([-1, 1]) * rnd.randint(6, 16)
+        dur = rnd.uniform(6, 11)
+        out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -8;{dx} {H // 2};{dx * 2} {H + 8}" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{-rnd.uniform(0, 8):.1f}s" repeatCount="indefinite"/>'
+                   f'<circle cx="{x}" cy="0" r="{rnd.uniform(1.1, 2.2):.1f}" fill="#C4D2E0" opacity="0.9"/></g>')
+    for _ in range(7):
+        x = rnd.randint(10, 890)
+        s = rnd.uniform(2.8, 4.4)
+        dx = rnd.choice([-1, 1]) * rnd.randint(8, 18)
+        dur = rnd.uniform(8, 13)
+        out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -8;{dx} {H // 2};{dx * 2} {H + 8}" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{-rnd.uniform(0, 9):.1f}s" repeatCount="indefinite"/>'
+                   f'<g transform="translate({x},0)"><g stroke="#B9C9DA" stroke-width="1.1" opacity="0.9">'
+                   f'<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="{dur:.1f}s" repeatCount="indefinite"/>'
+                   f'<line x1="0" y1="{-s:.1f}" x2="0" y2="{s:.1f}"/><line x1="{-s * 0.87:.1f}" y1="{-s / 2:.1f}" x2="{s * 0.87:.1f}" y2="{s / 2:.1f}"/>'
+                   f'<line x1="{-s * 0.87:.1f}" y1="{s / 2:.1f}" x2="{s * 0.87:.1f}" y2="{-s / 2:.1f}"/></g></g></g>')
+    return "".join(out)
+
+
+def fog_anim():
+    g = ('<defs><linearGradient id="fogg" x1="0" y1="0" x2="1" y2="0">'
+         '<stop offset="0" stop-color="#9FACBC" stop-opacity="0"/><stop offset="0.18" stop-color="#9FACBC" stop-opacity="1"/>'
+         '<stop offset="0.82" stop-color="#9FACBC" stop-opacity="1"/><stop offset="1" stop-color="#9FACBC" stop-opacity="0"/></linearGradient></defs>')
+    bands = ""
+    for i, (x, y, w, h, op, dur) in enumerate([(60, 12, 500, 13, 0.38, 30), (300, 28, 560, 14, 0.34, 38),
+                                               (-40, 42, 480, 13, 0.3, 33), (420, 52, 460, 12, 0.26, 42)]):
+        d = 90 if i % 2 == 0 else -90
+        bands += (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{h / 2}" fill="url(#fogg)" opacity="{op}">'
+                  f'<animateTransform attributeName="transform" type="translate" values="0 0;{d} 0;0 0" {SPLINE2} dur="{dur}s" repeatCount="indefinite"/></rect>')
+    return g + bands
+
+
+def storm_extras(rnd, H):
+    x = rnd.randint(240, 660)
+    kt = 'keyTimes="0;0.52;0.545;0.57;0.585;0.61;1" dur="7s" repeatCount="indefinite"'
+    return (f'<rect x="0" y="0" width="900" height="{H}" fill="#FFF3C4" opacity="0">'
+            f'<animate attributeName="opacity" values="0;0;0.26;0;0.13;0;0" {kt}/></rect>'
+            f'<g transform="translate({x},4)" opacity="0">'
+            f'<animate attributeName="opacity" values="0;0;1;0;0.5;0;0" {kt}/>'
+            f'<path d="M6 0 L-5 26 L4 24 L-10 56 M-1 19 L-15 31" stroke="#FFE9A8" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.3"/>'
+            f'<path d="M6 0 L-5 26 L4 24 L-10 56 M-1 19 L-15 31" stroke="#FFE9A8" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>')
+
+
+def weather_layer(w, rnd, H):
+    out = [clouds_for(w, rnd)]
+    if w in ("rain", "storm"):
+        out.append(rain_anim(rnd, H))
+    if w == "snow":
+        out.append(snow_anim(rnd, H))
+    if w == "fog":
+        out.append(fog_anim())
+    if w == "storm":
+        out.append(storm_extras(rnd, H))
+    return "".join(out)
+
+
+# ---------------- butterfly ----------------
+def butterfly_body(scale=1.0):
+    return (f'<g transform="scale({scale})">'
             '<g><animateTransform attributeName="transform" type="scale" values="1 1;1 0.3;1 1" keyTimes="0;0.5;1" dur="0.5s" repeatCount="indefinite"/>'
             '<path d="M1 -1 C 7 -15, -13 -17, -6 -2 Z" fill="#F4795B" opacity="0.9"/>'
             '<path d="M-3 -1 C -7 -13, -17 -8, -9 -1 Z" fill="#FBC7B3" opacity="0.85"/>'
             '<path d="M1 1 C 7 15, -13 17, -6 2 Z" fill="#F4795B" opacity="0.9"/>'
             '<path d="M-3 1 C -7 13, -17 8, -9 1 Z" fill="#FBC7B3" opacity="0.85"/></g>'
             '<ellipse rx="5.5" ry="1.8" fill="#A33D22"/>'
-            '<path d="M5 -1 Q 9 -5 11 -6 M5 1 Q 9 5 11 6" stroke="#A33D22" stroke-width="0.8" fill="none"/>'
-            '</g></g>')
+            '<path d="M5 -1 Q 9 -5 11 -6 M5 1 Q 9 5 11 6" stroke="#A33D22" stroke-width="0.8" fill="none"/></g>')
 
 
-def falling(rnd, shapes, count, h, colors):
-    out = []
-    for _ in range(count):
-        px = rnd.randint(30, 870)
-        drift = rnd.choice([-1, 1]) * rnd.randint(16, 34)
-        dur = rnd.uniform(7, 12)
-        beg = rnd.uniform(0, 6)
-        c = rnd.choice(colors)
-        out.append(f'<g transform="translate({px},-10)" opacity="0">'
-                   f'<animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.1;0.75;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
-                   f'<g><animateTransform attributeName="transform" type="translate" values="0 0;{drift} {h // 2};{drift * 2} {h}" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
-                   f'<use href="#{shapes}" fill="{c}">'
-                   f'<animateTransform attributeName="transform" type="rotate" values="0;170;350" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
-                   f'</use></g></g>')
-    return "".join(out)
+def butterfly_patrol(path, dur):
+    return ('<g opacity="0">'
+            f'<animate attributeName="opacity" values="0;0.95;0.95;0" keyTimes="0;0.05;0.95;1" dur="{dur}s" begin="1s" repeatCount="indefinite"/>'
+            f'<g><animateMotion dur="{dur}s" begin="1s" repeatCount="indefinite" rotate="auto" path="{path}"/>'
+            + butterfly_body() + '</g></g>')
 
 
-def weather_layer(w, rnd, H):
-    out = []
-    if w in ("clouds", "rain", "storm"):
-        col, op = ("#98A5B8", 0.75) if w in ("rain", "storm") else ("#C9D2DE", 0.55)
-        for i, (cy, sc) in enumerate([(14, 0.9), (26, 1.25), (18, 1.0)]):
-            out.append(f'<g opacity="{op}"><g transform="translate(0,{cy}) scale({sc})">'
-                       f'<animateTransform attributeName="transform" type="translate" values="-170 {cy};950 {cy}" dur="{58 + i * 14}s" begin="{-i * 23}s" repeatCount="indefinite" additive="replace"/>'
-                       f'<g transform="scale({sc})"><ellipse rx="34" ry="11" fill="{col}"/><ellipse cx="22" cy="-6" rx="23" ry="9" fill="{col}"/><ellipse cx="-24" cy="-4" rx="21" ry="8" fill="{col}"/></g></g></g>')
-    if w in ("rain", "storm"):
-        for _ in range(26):
-            x = rnd.randint(0, 900)
-            dur = rnd.uniform(0.8, 1.3)
-            out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -14;0 {H + 20}" dur="{dur:.2f}s" begin="{-rnd.uniform(0, 1.3):.2f}s" repeatCount="indefinite"/>'
-                       f'<line x1="{x}" y1="0" x2="{x - 4}" y2="12" stroke="#8FA8C4" stroke-width="1.3" stroke-linecap="round" opacity="0.55"/></g>')
-    if w == "snow":
-        for _ in range(20):
-            x = rnd.randint(0, 900)
-            dx = rnd.choice([-1, 1]) * rnd.randint(6, 16)
-            dur = rnd.uniform(6, 11)
-            out.append(f'<g><animateTransform attributeName="transform" type="translate" values="0 -8;{dx} {H // 2};{dx * 2} {H + 8}" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{-rnd.uniform(0, 8):.1f}s" repeatCount="indefinite"/>'
-                       f'<circle cx="{x}" cy="0" r="{rnd.uniform(1.2, 2.4):.1f}" fill="#EDF2F7" opacity="0.85"/></g>')
-    if w == "fog":
-        for i, y in enumerate([16, 34, 50]):
-            out.append(f'<g opacity="0.22"><rect x="{-40 + i * 180}" y="{y}" width="420" height="12" rx="6" fill="#B9C2CE">'
-                       f'<animateTransform attributeName="transform" type="translate" values="0 0;110 0;0 0" {SPLINE2} dur="{28 + i * 7}s" repeatCount="indefinite"/></rect></g>')
-    if w == "storm":
-        x = rnd.randint(220, 680)
-        out.append(f'<rect x="0" y="0" width="900" height="{H}" fill="#FFF3C4" opacity="0">'
-                   '<animate attributeName="opacity" values="0;0;0.28;0;0.14;0;0" keyTimes="0;0.52;0.545;0.57;0.585;0.61;1" dur="7s" repeatCount="indefinite"/></rect>')
-        out.append(f'<path d="M{x} 6 L{x - 7} 26 L{x + 1} 24 L{x - 6} 48" stroke="#FFE9A8" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0">'
-                   '<animate attributeName="opacity" values="0;0;1;0;0.5;0;0" keyTimes="0;0.52;0.545;0.57;0.585;0.61;1" dur="7s" repeatCount="indefinite"/></path>')
-    return "".join(out)
+# ---------------- cat ----------------
+def cat_head(blink=False, twitch=False):
+    eye = (f'<ellipse cx="-4.4" cy="-1.6" rx="1.05" ry="1.05" fill="{PEACH}">'
+           '<animate attributeName="ry" values="1.05;1.05;0.12;1.05" keyTimes="0;0.88;0.94;1" dur="5.2s" repeatCount="indefinite"/>'
+           '</ellipse>') if blink else f'<circle cx="-4.4" cy="-1.6" r="1.05" fill="{PEACH}"/>'
+    ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
+                f'keyTimes="0;0.44;0.448;0.456;0.464;0.472;1" {CYC}/>') if twitch else ''
+    return (f'<path d="M-8.5 1 L-14.5 -0.2 M-8.3 2.6 L-14 3.4" stroke="{C}" stroke-width="0.7" opacity="0.55" fill="none"/>'
+            f'<g>{ear_anim}<path d="M-6.3 -3.2 L-7.6 -11.8 L-1.6 -6.5 Z" fill="{C}"/>'
+            f'<path d="M-6 -5 L-6.6 -9.6 L-3.6 -6.8 Z" fill="{PEACH}" opacity="0.5"/></g>'
+            f'<path d="M-0.2 -6.9 L3.8 -12.2 L4.9 -4.9 Z" fill="{C}"/>'
+            f'<circle r="6.6" fill="{C}"/>'
+            f'<ellipse cx="-5.2" cy="1.8" rx="3.4" ry="2.6" fill="{C}"/>'
+            f'<path d="M-6 -5 L-6.6 -9.6 L-3.6 -6.8 Z" fill="{PEACH}" opacity="0.5"/>'
+            + eye)
 
 
-SUN = ('<g transform="translate(52,26)">'
-       '<circle r="18" fill="#FFD9A0" opacity="0.3"><animate attributeName="opacity" values="0.2;0.42;0.2" keyTimes="0;0.5;1" dur="5s" repeatCount="indefinite"/></circle>'
-       '<circle r="9" fill="#FFC069"/>'
-       '<g stroke="#FFC069" stroke-width="1.5" opacity="0.65">'
-       '<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="70s" repeatCount="indefinite"/>'
-       + "".join(f'<line x1="0" y1="-13" x2="0" y2="-18" transform="rotate({a})"/>' for a in range(0, 360, 45))
-       + '</g></g>')
+def cat_leg(x, y, a, b, beg, faded=False):
+    op = ' opacity="0.75"' if faded else ''
+    return (f'<g transform="translate({x},{y})"><path d="M-1.8 0 L1.8 0 L1.4 11.6 Q0 13.2 -1.4 11.6 Z" fill="{C}"{op}>'
+            f'<animateTransform attributeName="transform" type="rotate" values="{a};{b};{a}" {SPLINE2} dur="0.6s" begin="{beg}s" repeatCount="indefinite"/></path></g>')
+
+
+def cat_pose_walk():
+    return ('<g>'
+            f'<animateTransform attributeName="transform" type="translate" values="0 0;0 -1.3;0 0" {SPLINE2} dur="0.6s" repeatCount="indefinite"/>'
+            + cat_leg(-6, -12, -16, 16, -0.3, True) + cat_leg(11, -12, 14, -14, -0.3, True)
+            + f'<path d="M-13 -24 C -6 -29.5 6 -30 12 -24.5 C 16 -20.5 17 -13.5 14.5 -9 C 13.4 -7.2 11.4 -6.4 9.4 -6.4 L -7.4 -6.4 C -10.6 -6.4 -12.9 -9.2 -13.7 -13.2 C -14.4 -17.2 -14.2 -21.4 -13 -24 Z" fill="{C}"/>'
+            + cat_leg(-9, -12, 18, -18, 0) + cat_leg(14, -12, -15, 15, 0)
+            + f'<g transform="translate(13.5,-20)"><path d="M0 1.5 C 7.5 0.5 11.5 -6 9.8 -13.5 C 8.8 -17.5 5.8 -19.8 3.2 -19" stroke="{C}" stroke-width="3.3" fill="none" stroke-linecap="round">'
+            f'<animateTransform attributeName="transform" type="rotate" values="-8;8;-8" {SPLINE2} dur="1.6s" repeatCount="indefinite"/></path></g>'
+            + f'<g transform="translate(-15.5,-22.5)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_sit():
+    look = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;-16;-16;0;0" '
+            f'keyTimes="0;0.40;0.425;0.50;0.525;1" {CYC}/>')
+    return ('<g>'
+            f'<g transform="translate(12,-2)"><path d="M0 0 C 3 2.5 -1 4.2 -7 4 C -13.5 3.8 -18 2.2 -19.5 0.2" stroke="{C}" stroke-width="3.2" fill="none" stroke-linecap="round">'.replace("{C}", C)
+            + f'<animateTransform attributeName="transform" type="rotate" values="0;0;7;0;0" keyTimes="0;0.7;0.79;0.88;1" dur="6s" repeatCount="indefinite"/></path></g>'
+            + '<g><animateTransform attributeName="transform" type="scale" values="1 1;1 1.018;1 1" keyTimes="0;0.5;1" dur="3.4s" repeatCount="indefinite"/>'
+            + f'<path d="M-9.5 0 C -10.5 -7 -9.5 -15 -5.5 -20.5 C -2.5 -24.5 3.5 -26 8 -23.5 C 12.5 -21 14.5 -15.5 14 -9.5 C 13.7 -5.5 12.8 -2 12 0 Z" fill="{C}"/>'
+            + f'<rect x="-9.2" y="-10" width="3.2" height="10" rx="1.5" fill="{C}"/>'
+            + f'<g transform="translate(-4.5,-27)"><g>{look}{cat_head(blink=True, twitch=True)}</g></g>'
+            + '</g></g>')
+
+
+def cat_pose_stretch():
+    return ('<g>'
+            f'<g transform="translate(15.5,-17)"><path d="M0 0 C 5 -4 6 -11 2.5 -15 C 0.5 -17.5 -2.5 -18 -4 -16.5" stroke="{C}" stroke-width="3.2" fill="none" stroke-linecap="round">'.replace("{C}", C)
+            + f'<animateTransform attributeName="transform" type="rotate" values="-10;10;-10" {SPLINE2} dur="1.8s" repeatCount="indefinite"/></path></g>'
+            + f'<rect x="9.5" y="-9" width="3.2" height="9" rx="1.5" fill="{C}"/>'
+            + f'<rect x="13" y="-8.5" width="3.2" height="8.5" rx="1.5" fill="{C}" opacity="0.8"/>'
+            + f'<path d="M-12 -6 C -6 -9 0 -13.5 5 -17.5 C 9 -20.5 14 -19.5 15.7 -15 C 17 -11 16 -6 13.8 -3.2 C 12.8 -1.8 11 -1.2 9.2 -1.2 L 2 -1.2 C -3 -1.2 -8 -3.5 -12 -6 Z" fill="{C}"/>'
+            + f'<path d="M-10 -5.5 L-18.5 -0.8 Q-19.6 0 -18.4 0.4 L-15.4 0.4 L-8.4 -3.6 Z" fill="{C}"/>'
+            + f'<path d="M-8 -4.5 L-15.5 -0.2 Q-16.4 0.5 -15.2 0.8 L-12.4 0.8 L-6 -2.8 Z" fill="{C}" opacity="0.8"/>'
+            + f'<g transform="translate(-14.5,-11) rotate(12)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_show(season):
+    """120s choreography: walk in -> sit (watch flyby, blink, ear twitch) -> stretch -> walk out."""
+    pose = ('<g opacity="0"><animate attributeName="opacity" values="{v}" keyTimes="{k}" '
+            f'calcMode="discrete" {CYC}/>' + '{body}</g>')
+    walk = pose.format(v="0;1;0;1;0", k="0;0.2;0.33;0.62;0.75", body=cat_pose_walk())
+    sit = pose.format(v="0;1;0", k="0;0.33;0.55", body=cat_pose_sit())
+    stretch = pose.format(v="0;1;0", k="0;0.55;0.62", body=cat_pose_stretch())
+    flyby = ""
+    if season != "winter":
+        flyby = ('<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0;0.38;0.52" '
+                 f'calcMode="discrete" {CYC}/>'
+                 f'<g><animateMotion path="M700 62 C 620 42 540 78 480 58 C 440 45 410 62 380 54" '
+                 f'keyPoints="0;0;1;1" keyTimes="0;0.38;0.52;1" calcMode="linear" rotate="auto" {CYC}/>'
+                 + butterfly_body(0.75) + '</g></g>')
+    return ('<g><animateTransform attributeName="transform" type="translate" '
+            f'values="950 0;950 0;450 0;450 0;-140 0;-140 0" keyTimes="0;0.2;0.33;0.62;0.75;1" {CYC}/>'
+            f'<g transform="translate(0,130)">{walk}{sit}{stretch}</g></g>' + flyby)
 
 
 # ---------------- sky ----------------
@@ -159,6 +302,22 @@ def gen_sky(w, s):
     H = 70
     base = ['<defs><path id="spet" d="M0 0 C-4 -5 -4 -13 0 -17 C4 -13 4 -5 0 0 Z"/>'
             '<path id="sleaf" d="M0 0 Q-7 -3 -9 -10 Q-3 -8 0 0 Z"/></defs>']
+
+    def drifting(shape, count, colors):
+        out = []
+        for _ in range(count):
+            px = rnd.randint(30, 870)
+            drift = rnd.choice([-1, 1]) * rnd.randint(16, 34)
+            dur, beg = rnd.uniform(7, 12), rnd.uniform(0, 6)
+            c = rnd.choice(colors)
+            out.append(f'<g transform="translate({px},-10)" opacity="0">'
+                       f'<animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.1;0.75;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'<g><animateTransform attributeName="transform" type="translate" values="0 0;{drift} {H // 2 + 10};{drift * 2} {H + 20}" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'<use href="#{shape}" fill="{c}">'
+                       f'<animateTransform attributeName="transform" type="rotate" values="0;170;350" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'</use></g></g>')
+        return "".join(out)
+
     if s in ("spring", "summer") and w in ("clear", "clouds"):
         for (sx, sy, sc, dur, beg) in [(330, 50, 0.6, 4.2, 1.6), (560, 22, 0.9, 3.8, 2.4), (720, 48, 0.7, 4.4, 0.9)]:
             base.append(f'<g transform="translate({sx},{sy}) scale({sc})"><g opacity="0">'
@@ -171,19 +330,19 @@ def gen_sky(w, s):
                         f'<animateTransform attributeName="transform" type="translate" values="0 3;0 -6;0 3" {SPLINE2} dur="{dur}s" begin="{beg}s" repeatCount="indefinite"/>'
                         f'<circle r="2" fill="{c}" opacity="0"><animate attributeName="opacity" values="0;0.55;0" keyTimes="0;0.5;1" dur="{dur}s" begin="{beg}s" repeatCount="indefinite"/></circle></g></g>')
     if s == "spring":
-        base.append(falling(rnd, "spet", 2, H + 20, ["#FBC7B3", "#F4795B"]))
+        base.append(drifting("spet", 2, ["#FBC7B3", "#F4795B"]))
     if s == "autumn":
-        base.append(falling(rnd, "sleaf", 4, H + 20, ["#C46A38", "#D98E4A", "#B57B3F"]))
+        base.append(drifting("sleaf", 4, ["#C46A38", "#D98E4A", "#B57B3F"]))
     base.append(weather_layer(w, rnd, H))
     if s in ("spring", "summer") and w in ("clear", "clouds"):
-        base.append(butterfly("M880 30 C700 60 560 5 420 40 C300 68 160 15 20 38 C160 62 340 20 520 50 C680 72 800 45 880 30", 15))
+        base.append(butterfly_patrol("M880 30 C700 60 560 5 420 40 C300 68 160 15 20 38 C160 62 340 20 520 50 C680 72 800 45 880 30", 15))
     base.append(f'<text x="893" y="64" text-anchor="end" font-size="9" letter-spacing="1.5" fill="#8b949e">LIVE SKY · {w.upper()} · {s.upper()}</text>')
 
     def wrap(inner):
         return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 70" width="900" height="70" '
                 'font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">\n<title>sky</title>' + inner + '</svg>\n')
 
-    day = wrap((SUN if w == "clear" else "") + "".join(base))
+    day = wrap((sun() if w in ("clear", "clouds") else "") + "".join(base))
     night = wrap(stars(9, 30, 870, 8, 58, 11) + nightify("".join(base)))
     return day, night
 
@@ -200,32 +359,6 @@ FIREFLY_SPOTS = [(150, 70, 9, 2.0, 2.4), (320, 50, 11, 3.2, 3.0), (480, 82, 8.5,
 DAISY_SPOTS = [(120, 118, 0.9, 1.2), (382, 124, 0.7, 1.6), (633, 120, 0.85, 1.4), (818, 126, 0.65, 1.8)]
 
 
-def cat():
-    C = "#3B2F2A"
-    leg = ('<g transform="translate({x},{y})"><path d="M-1.7 0 L1.7 0 L1.3 9.5 Q0 11 -1.3 9.5 Z" fill="' + C + '"{extra}>'
-           '<animateTransform attributeName="transform" type="rotate" values="{a};{b};{a}" '
-           f'{SPLINE2} ' + 'dur="0.6s" begin="{beg}s" repeatCount="indefinite"/></path></g>')
-    return ('<g><animateTransform attributeName="transform" type="translate" '
-            'values="950 0;950 0;-130 0;-130 0" keyTimes="0;0.6;0.78;1" dur="90s" begin="-25s" repeatCount="indefinite"/>'
-            '<g transform="translate(0,129)">'
-            f'<g><animateTransform attributeName="transform" type="translate" values="0 0;0 -1.3;0 0" {SPLINE2} dur="0.6s" repeatCount="indefinite"/>'
-            '<g transform="translate(14,-15)"><path d="M0 2 C 7 0 10.5 -7 8 -15 C 7 -18.5 4.5 -20.5 2.5 -19.5" '
-            f'stroke="{C}" stroke-width="3.2" fill="none" stroke-linecap="round">'
-            f'<animateTransform attributeName="transform" type="rotate" values="-9;9;-9" {SPLINE2} dur="1.6s" repeatCount="indefinite"/></path></g>'
-            + leg.format(x=-6, y=-4, a=-20, b=20, beg=-0.3, extra=' opacity="0.75"')
-            + leg.format(x=11, y=-4, a=17, b=-17, beg=-0.3, extra=' opacity="0.75"')
-            + f'<path d="M-12 -20 C -2 -25.5 9 -24.5 14 -18 C 17.2 -14 17.2 -8 14 -4.5 L 12 -3.5 L -9 -3.5 C -13 -9 -14.2 -15 -12 -20 Z" fill="{C}"/>'
-            + leg.format(x=-9, y=-4, a=20, b=-20, beg=0, extra='')
-            + leg.format(x=14, y=-4, a=-17, b=17, beg=0, extra='')
-            + f'<path d="M-11 -17 C -11.5 -23 -15 -26.5 -19.5 -26.5 C -22 -26.5 -24.5 -25 -25.8 -22.5 '
-              f'C -27 -20.5 -27 -17.5 -25.5 -15.5 C -23.5 -12.8 -19 -12 -15.5 -13.5 C -13 -14.5 -11.3 -15.5 -11 -17 Z" fill="{C}"/>'
-            + f'<path d="M-25.2 -24.5 L-25.8 -31.5 L-20.8 -27.5 Z" fill="{C}"/>'
-            + f'<path d="M-18 -27.5 L-14.2 -32.5 L-13.2 -26 Z" fill="{C}"/>'
-            + '<circle cx="-22.6" cy="-20.8" r="1" fill="#FBC7B3"/>'
-            + '<path d="M-24.6 -25.6 L-24.9 -28.8 L-22.6 -26.9 Z" fill="#FBC7B3" opacity="0.55"/>'
-            '</g></g></g>')
-
-
 def gen_footer(w, s):
     cfg = SEASON_CFG[s]
     rnd = random.Random(f"footer-{s}")
@@ -233,10 +366,10 @@ def gen_footer(w, s):
          '<path id="fleaf" d="M0 0 Q-7 -3 -9 -10 Q-3 -8 0 0 Z"/></defs>']
     g, gop = cfg["ground"]
     p.append(f'<ellipse cx="450" cy="152" rx="480" ry="26" fill="{g}" opacity="{gop}"/>')
-    if s == "winter":  # snow drifts on the ground
+    if s == "winter":
         for (dx, rx) in [(180, 120), (450, 160), (740, 110)]:
             p.append(f'<ellipse cx="{dx}" cy="138" rx="{rx}" ry="7" fill="#EDF2F7" opacity="0.55"/>')
-    p.append(cat())
+    p.append(cat_show(s))
     x = 12
     while x < 895:
         h = rnd.randint(22, 52) if s != "winter" else rnd.randint(16, 34)
@@ -270,12 +403,28 @@ def gen_footer(w, s):
                  f'<circle r="5" fill="#F4A05B" opacity="0.15"><animate attributeName="opacity" values="0.08;0.4;0.08" keyTimes="0;0.5;1" dur="{glow}s" begin="{beg}s" repeatCount="indefinite"/></circle>'
                  f'<circle r="1.8" fill="#F4795B" opacity="0.35"><animate attributeName="opacity" values="0.25;1;0.25" keyTimes="0;0.5;1" dur="{glow}s" begin="{beg}s" repeatCount="indefinite"/></circle>'
                  f'</g></g>')
+
+    def drifting_footer(shape, count, colors):
+        out = []
+        for _ in range(count):
+            px = rnd.randint(30, 870)
+            drift = rnd.choice([-1, 1]) * rnd.randint(16, 34)
+            dur, beg = rnd.uniform(7, 12), rnd.uniform(0, 6)
+            c = rnd.choice(colors)
+            out.append(f'<g transform="translate({px},-10)" opacity="0">'
+                       f'<animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.1;0.75;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'<g><animateTransform attributeName="transform" type="translate" values="0 0;{drift} 75;{drift * 2} 150" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'<use href="#{shape}" fill="{c}">'
+                       f'<animateTransform attributeName="transform" type="rotate" values="0;170;350" keyTimes="0;0.5;1" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/>'
+                       f'</use></g></g>')
+        return "".join(out)
+
     if s == "spring":
-        p.append(falling(rnd, "fpetal", 4, 150, ["#F4795B", "#FBC7B3", "#ED8B66"]))
+        p.append(drifting_footer("fpetal", 4, ["#F4795B", "#FBC7B3", "#ED8B66"]))
     if s == "autumn":
-        p.append(falling(rnd, "fleaf", 6, 150, ["#C46A38", "#D98E4A", "#B57B3F"]))
+        p.append(drifting_footer("fleaf", 6, ["#C46A38", "#D98E4A", "#B57B3F"]))
     if s == "winter" or w == "snow":
-        p.append(weather_layer("snow", random.Random(f"fsnow-{s}"), 140))
+        p.append(snow_anim(random.Random(f"fsnow-{s}"), 140))
 
     def wrap(inner):
         return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" width="900" height="140">\n'
