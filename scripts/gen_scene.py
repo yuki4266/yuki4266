@@ -218,65 +218,169 @@ def butterfly_patrol(path, dur):
             + butterfly_body() + '</g></g>')
 
 
-# ---------------- cat (Neko sprites from oneko / adryd325/oneko.js) ----------------
-try:
-    from cat_sprite import SHEET_B64, SPRITES
-except ImportError:
-    from scripts.cat_sprite import SHEET_B64, SPRITES
+# ---------------- cat ----------------
+def cat_head(blink=False, twitch=False):
+    eye = (f'<ellipse cx="-4.8" cy="-1.7" rx="1.1" ry="1.1" fill="{PEACH}">'
+           '<animate attributeName="ry" values="1.1;1.1;0.12;1.1" keyTimes="0;0.88;0.94;1" dur="5.2s" repeatCount="indefinite"/>'
+           '</ellipse>') if blink else f'<circle cx="-4.8" cy="-1.7" r="1.1" fill="{PEACH}"/>'
+    ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
+                f'keyTimes="0;0.505;0.513;0.521;0.529;0.537;1" {CYC}/>') if twitch else ''
+    return (f'<path d="M-9 0.6 L-15.5 -0.8 M-8.8 2.4 L-15 3 M-8.4 4 L-14 5.4" stroke="{C}" stroke-width="0.7" opacity="0.55" fill="none"/>'
+            f'<g>{ear_anim}<path d="M-7 -3 L-8.6 -12.6 L-1.8 -6.9 Z" fill="{C}"/>'
+            f'<path d="M-6.6 -5 L-7.4 -10.4 L-4 -7.2 Z" fill="{PEACH}" opacity="0.55"/></g>'
+            f'<path d="M-0.2 -7.3 L4.2 -13 L5.4 -5.2 Z" fill="{C}"/>'
+            f'<circle r="7.2" fill="{C}"/>'
+            f'<ellipse cx="-5.6" cy="2" rx="3.6" ry="2.7" fill="{C}"/>'
+            f'<path d="M-7.6 3 L-10.6 4.4 L-7.2 5.6 Z" fill="{C}"/>'
+            f'<path d="M-6.6 -5 L-7.4 -10.4 L-4 -7.2 Z" fill="{PEACH}" opacity="0.55"/>'
+            + eye)
 
-NEKO_DEFS = ('<clipPath id="nekoclip"><rect width="32" height="32"/></clipPath>'
-             f'<image id="nekoimg" width="256" height="128" href="data:image/png;base64,{SHEET_B64}" '
-             'style="image-rendering:pixelated"/>')
+
+def cat_leg(x, y, a, b, beg, faded=False):
+    op = ' opacity="0.75"' if faded else ''
+    return (f'<g transform="translate({x},{y})"><path d="M-1.8 0 L1.8 0 L1.4 11.6 Q0 13.2 -1.4 11.6 Z" fill="{C}"{op}>'
+            f'<animateTransform attributeName="transform" type="rotate" values="{a};{b};{a}" {SPLINE2} dur="0.6s" begin="{beg}s" repeatCount="indefinite"/></path></g>')
 
 
-def neko_state(state, v, k, frame_dur=0.2, arc=""):
-    """One sprite state, gated to a cycle window; multi-frame states cycle via discrete translate."""
-    cells = SPRITES[state]
-    if len(cells) > 1:
-        vals = ";".join(f"{cx * 32} {cy * 32}" for cx, cy in cells)
-        anim = (f'<animateTransform attributeName="transform" type="translate" values="{vals}" '
-                f'calcMode="discrete" dur="{len(cells) * frame_dur:.2f}s" repeatCount="indefinite"/>')
-        tr = ""
-    else:
-        anim = ""
-        cx, cy = cells[0]
-        tr = f' transform="translate({cx * 32},{cy * 32})"'
-    inner = f'<g clip-path="url(#nekoclip)"><g{tr}>{anim}<use href="#nekoimg"/></g></g>'
-    if arc:
-        inner = f'<g>{arc}{inner}</g>'
-    return (f'<g opacity="0"><animate attributeName="opacity" values="{v}" keyTimes="{k}" '
-            f'calcMode="discrete" {CYC}/>{inner}</g>')
+def slim_leg(x1, y1, x2, y2, w=3.2, faded=False):
+    op = ' opacity="0.78"' if faded else ''
+    return f'<path d="M{x1} {y1} L{x2} {y2}" stroke="{C}" stroke-width="{w}" stroke-linecap="round" fill="none"{op}/>'
+
+
+CAT_BODY = ('M-13 -24 C -6 -29.5 6 -30 12 -24.5 C 16 -20.5 17 -13.5 14.5 -9 C 13.4 -7.2 11.4 -6.4 9.4 -6.4 '
+            'L -7.4 -6.4 C -10.6 -6.4 -12.9 -9.2 -13.7 -13.2 C -14.4 -17.2 -14.2 -21.4 -13 -24 Z')
+
+
+def cat_gait(gait_dur, amp, bob, tail_vals, tail_dur):
+    return ('<g>'
+            f'<animateTransform attributeName="transform" type="translate" values="0 0;0 {-bob};0 0" {SPLINE2} dur="{gait_dur}s" repeatCount="indefinite"/>'
+            + cat_leg(-6, -12, -amp + 2, amp - 2, -gait_dur / 2, True) + cat_leg(11, -12, amp - 4, -amp + 4, -gait_dur / 2, True)
+            + f'<path d="{CAT_BODY}" fill="{C}"/>'
+            + cat_leg(-9, -12, amp, -amp, 0) + cat_leg(14, -12, -amp + 3, amp - 3, 0)
+            + f'<g transform="translate(13.5,-20)"><path d="M0 1.5 C 7.5 0.5 11.5 -6 9.8 -13.5 C 8.8 -17.5 5.8 -19.8 3.2 -19" stroke="{C}" stroke-width="3.6" fill="none" stroke-linecap="round">'
+            f'<animateTransform attributeName="transform" type="rotate" values="{tail_vals}" {SPLINE2} dur="{tail_dur}s" repeatCount="indefinite"/></path></g>'
+            + f'<g transform="translate(-15.5,-22.5)">{cat_head()}</g>'
+            + '</g>')
+
+
+def cat_pose_walk():
+    return cat_gait(0.5, 18, 1.4, "-8;8;-8", 1.4)
+
+
+def cat_pose_dash():
+    return cat_gait(0.32, 24, 2.0, "-26;-14;-26", 0.4)
+
+
+def cat_pose_sit():
+    look = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;-14;-14;0;0" '
+            f'keyTimes="0;0.477;0.485;0.495;0.503;1" {CYC}/>')
+    return ('<g>'
+            f'<g transform="translate(12,-2)"><path d="M0 0 C 3 2.5 -1 4.2 -7 4 C -13.5 3.8 -18 2.2 -19.5 0.2" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round">'.replace("{C}", C)
+            + f'<animateTransform attributeName="transform" type="rotate" values="0;0;7;0;0" keyTimes="0;0.7;0.79;0.88;1" dur="6s" repeatCount="indefinite"/></path></g>'
+            + '<g><animateTransform attributeName="transform" type="scale" values="1 1;1 1.018;1 1" keyTimes="0;0.5;1" dur="3.4s" repeatCount="indefinite"/>'
+            + f'<path d="M-9.5 0 C -10.5 -7 -9.5 -15 -5.5 -20.5 C -2.5 -24.5 3.5 -26 8 -23.5 C 12.5 -21 14.5 -15.5 14 -9.5 C 13.7 -5.5 12.8 -2 12 0 Z" fill="{C}"/>'
+            + f'<rect x="-9.2" y="-10" width="3.2" height="10" rx="1.5" fill="{C}"/>'
+            + f'<g transform="translate(-4.5,-27)"><g>{look}{cat_head(blink=True, twitch=True)}</g></g>'
+            + '</g></g>')
+
+
+def cat_pose_stretch():
+    return ('<g>'
+            f'<g transform="translate(15.5,-17)"><path d="M0 0 C 5 -4 6 -11 2.5 -15 C 0.5 -17.5 -2.5 -18 -4 -16.5" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round">'.replace("{C}", C)
+            + f'<animateTransform attributeName="transform" type="rotate" values="-10;10;-10" {SPLINE2} dur="1.8s" repeatCount="indefinite"/></path></g>'
+            + f'<rect x="9.5" y="-9" width="3.2" height="9" rx="1.5" fill="{C}"/>'
+            + f'<rect x="13" y="-8.5" width="3.2" height="8.5" rx="1.5" fill="{C}" opacity="0.8"/>'
+            + f'<path d="M-12 -6 C -6 -9 0 -13.5 5 -17.5 C 9 -20.5 14 -19.5 15.7 -15 C 17 -11 16 -6 13.8 -3.2 C 12.8 -1.8 11 -1.2 9.2 -1.2 L 2 -1.2 C -3 -1.2 -8 -3.5 -12 -6 Z" fill="{C}"/>'
+            + f'<path d="M-10 -5.5 L-18.5 -0.8 Q-19.6 0 -18.4 0.4 L-15.4 0.4 L-8.4 -3.6 Z" fill="{C}"/>'
+            + f'<path d="M-8 -4.5 L-15.5 -0.2 Q-16.4 0.5 -15.2 0.8 L-12.4 0.8 L-6 -2.8 Z" fill="{C}" opacity="0.8"/>'
+            + f'<g transform="translate(-14.5,-11) rotate(12)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_crouch():
+    return ('<g>'
+            '<g><animateTransform attributeName="transform" type="rotate" values="0;2.5;0;-2;0" keyTimes="0;0.25;0.5;0.75;1" dur="0.5s" repeatCount="indefinite"/>'
+            f'<g transform="translate(13,-6)"><path d="M0 0 C 6.5 1.5 10 -2 9.5 -8 C 9.2 -11.5 7 -13.5 5 -13" stroke="{C}" stroke-width="3.6" fill="none" stroke-linecap="round">'
+            '<animateTransform attributeName="transform" type="rotate" values="-6;10;-6" keyTimes="0;0.5;1" dur="0.5s" repeatCount="indefinite"/></path></g>'
+            f'<ellipse cx="8.5" cy="-8.5" rx="7" ry="6" fill="{C}"/></g>'
+            f'<path d="M-14 -9 C -8 -14.5 4 -15.5 11 -12 C 15 -10 16 -6.5 14.5 -4 C 13.5 -2.2 11 -1.8 9 -1.8 L -10 -1.8 C -13.2 -1.8 -15 -5.5 -14 -9 Z" fill="{C}"/>'
+            + slim_leg(-11, -3, -7, -1.4, 3.4)
+            + f'<g transform="translate(-16.5,-10.5)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_pounce():
+    return ('<g transform="rotate(-16)">'
+            f'<g transform="translate(13,-13)"><path d="M0 0 C 6 -2 8.5 -8 6.5 -14 C 5.5 -17 3 -18.5 1 -17.5" stroke="{C}" stroke-width="3.6" fill="none" stroke-linecap="round"/></g>'
+            + slim_leg(9, -9, 20, -3.5, 3.4, True)
+            + slim_leg(11, -10, 22, -6, 3.4)
+            + f'<path d="M-15 -13.5 C -9 -19 3 -20 9.5 -16.5 C 13.8 -14 15 -10.5 13.5 -7.5 C 12.2 -5 8.5 -4.5 5.5 -5 L -12 -8 C -15 -8.6 -16.2 -11 -15 -13.5 Z" fill="{C}"/>'
+            + slim_leg(-11, -9, -21.5, -1.5, 3.4, True)
+            + slim_leg(-9, -8, -19.5, 0.5, 3.4)
+            + f'<g transform="translate(-17.5,-15.5) rotate(-8)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_reach():
+    return ('<g>'
+            f'<g transform="translate(6,-6)"><path d="M0 0 C 5 3 9.5 1 10.5 -4.5 C 11 -8 9 -10.5 6.5 -10.5" stroke="{C}" stroke-width="3.6" fill="none" stroke-linecap="round">'
+            '<animateTransform attributeName="transform" type="rotate" values="-8;8;-8" keyTimes="0;0.5;1" dur="1.2s" repeatCount="indefinite"/></path></g>'
+            + slim_leg(-1.5, -7, -2, 0, 3.4)
+            + slim_leg(3.5, -6.5, 4, 0, 3.4, True)
+            + f'<path d="M-5.5 -8 C -8.5 -14 -8 -25 -3.5 -31.5 C -0.5 -35.5 5 -35 7.5 -30.5 C 10.5 -25 10 -14 7 -7 C 5.5 -3.8 2.5 -3 -0.5 -4 Z" fill="{C}"/>'
+            + slim_leg(-4.5, -30, -8.5, -43, 3.2)
+            + slim_leg(5, -30, 8, -43.5, 3.2, True)
+            + f'<g transform="translate(-2,-36) rotate(-18)">{cat_head()}</g>'
+            '</g>')
+
+
+def cat_pose_stand():
+    return ('<g>'
+            + slim_leg(-8, -11, -8.5, 0, 3.4) + slim_leg(-5, -11, -4.5, 0, 3.4, True)
+            + slim_leg(11, -11, 11.5, 0, 3.4) + slim_leg(14, -11, 14.5, 0, 3.4, True)
+            + f'<path d="M-12.5 -24 C -6 -29.5 5 -30 10.5 -24.8 C 14.5 -21 15.5 -14 13.5 -9.2 C 12.5 -7.3 10.7 -6.4 8.8 -6.4 L -7 -6.4 C -10.2 -6.4 -12.4 -9.2 -13.2 -13.2 C -13.9 -17.2 -13.7 -21.4 -12.5 -24 Z" fill="{C}"/>'
+            f'<g transform="translate(12.5,-20)"><path d="M0 1.5 C 7 0.5 10.5 -6 9 -13 C 8 -16.5 5.5 -18.5 3 -17.8" stroke="{C}" stroke-width="3.6" fill="none" stroke-linecap="round">'
+            '<animateTransform attributeName="transform" type="rotate" values="-6;6;-6" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite"/></path></g>'
+            + f'<g transform="translate(-13.5,-22.5) rotate(-17)">{cat_head()}</g>'
+            '</g>')
 
 
 def cat_show(season):
-    """75s Neko show: dash in -> spot butterfly -> pounce -> chase -> paw at the progress bar ->
-    jump for it (misses) -> yawn -> nap -> startle awake -> dash off."""
-    arc_pounce = (f'<animateTransform attributeName="transform" type="translate" '
-                  f'values="0 0;0 0;0 -28;0 0;0 0" keyTimes="0;0.21;0.235;0.26;1" {CYC}/>')
-    arc_jump = (f'<animateTransform attributeName="transform" type="translate" '
-                f'values="0 0;0 0;0 -55;0 0;0 0" keyTimes="0;0.46;0.48;0.50;1" {CYC}/>')
-    st = [
-        neko_state("W", "0;1;0;1;0;1;0", "0;0.04;0.16;0.26;0.34;0.64;0.72", 0.15),
-        neko_state("idle", "0;1;0", "0;0.16;0.185"),
-        neko_state("alert", "0;1;0;1;0", "0;0.185;0.21;0.62;0.64"),
-        neko_state("NW", "0;1;0", "0;0.21;0.26", 0.15, arc_pounce),
-        neko_state("scratchWallN", "0;1;0", "0;0.34;0.46", 0.25),
-        neko_state("N", "0;1;0", "0;0.46;0.50", 0.15, arc_jump),
-        neko_state("tired", "0;1;0", "0;0.50;0.54"),
-        neko_state("sleeping", "0;1;0", "0;0.54;0.62", 0.8),
-    ]
-    body = f'<g transform="translate(-21,-41) scale(1.3)">{"".join(st)}</g>'
+    """75s show: trot in -> spot butterfly, crouch -> POUNCE -> dash chase ->
+    stare up at the progress bar -> two jump attempts (both miss) -> sit -> stretch -> zoomies out."""
+    pose = ('<g opacity="0"><animate attributeName="opacity" values="{v}" keyTimes="{k}" '
+            f'calcMode="discrete" {CYC}/>' + '{body}</g>')
+    walk = pose.format(v="0;1;0", k="0;0.04;0.15", body=cat_pose_walk())
+    dash = pose.format(v="0;1;0;1;0", k="0;0.235;0.30;0.60;0.70", body=cat_pose_dash())
+    crouch = pose.format(v="0;1;0;1;0;1;0", k="0;0.15;0.20;0.34;0.37;0.405;0.435", body=cat_pose_crouch())
+    pounce = pose.format(v="0;1;0", k="0;0.20;0.235",
+                         body=('<g><animateTransform attributeName="transform" type="translate" '
+                               f'values="0 0;0 0;0 -30;0 0;0 0" keyTimes="0;0.20;0.2175;0.235;1" {CYC}/>'
+                               + cat_pose_pounce() + '</g>'))
+    stand = pose.format(v="0;1;0", k="0;0.30;0.34", body=cat_pose_stand())
+    jump1 = pose.format(v="0;1;0", k="0;0.37;0.405",
+                        body=('<g><animateTransform attributeName="transform" type="translate" '
+                              f'values="0 0;0 0;0 -50;0 0;0 0" keyTimes="0;0.37;0.3875;0.405;1" {CYC}/>'
+                              + cat_pose_reach() + '</g>'))
+    jump2 = pose.format(v="0;1;0", k="0;0.435;0.475",
+                        body=('<g><animateTransform attributeName="transform" type="translate" '
+                              f'values="0 0;0 0;0 -66;0 0;0 0" keyTimes="0;0.435;0.455;0.475;1" {CYC}/>'
+                              + cat_pose_reach() + '</g>'))
+    sit = pose.format(v="0;1;0", k="0;0.475;0.55", body=cat_pose_sit())
+    stretch = pose.format(v="0;1;0", k="0;0.55;0.60", body=cat_pose_stretch())
     flyby = ""
     if season != "winter":
-        flyby = ('<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0;0.17;0.25" '
+        flyby = ('<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0;0.12;0.24" '
                  f'calcMode="discrete" {CYC}/>'
-                 f'<g><animateMotion path="M980 55 C 880 75 780 48 700 68 C 650 80 610 62 575 70 C 545 76 520 45 470 -25" '
-                 f'keyPoints="0;0;0.6;0.75;1;1" keyTimes="0;0.17;0.20;0.21;0.25;1" calcMode="linear" rotate="auto" {CYC}/>'
+                 f'<g><animateMotion path="M980 60 C 860 80 760 50 660 72 C 600 85 560 66 525 76 C 500 82 470 40 430 -25" '
+                 f'keyPoints="0;0;0.55;0.75;1;1" keyTimes="0;0.12;0.18;0.20;0.24;1" calcMode="linear" rotate="auto" {CYC}/>'
                  + butterfly_body(0.75) + '</g></g>')
     return ('<g><animateTransform attributeName="transform" type="translate" '
-            f'values="950 0;950 0;560 0;560 0;300 0;300 0;-140 0;-140 0" '
-            f'keyTimes="0;0.04;0.16;0.26;0.34;0.64;0.72;1" {CYC}/>'
-            f'<g transform="translate(0,130)">{body}</g></g>' + flyby)
+            f'values="950 0;950 0;560 0;560 0;480 0;300 0;300 0;-140 0;-140 0" '
+            f'keyTimes="0;0.04;0.15;0.20;0.235;0.30;0.60;0.70;1" {CYC}/>'
+            f'<g transform="translate(0,130)">{{walk}}{{crouch}}{{pounce}}{{dash}}{{stand}}{{jump1}}{{jump2}}{{sit}}{{stretch}}</g></g>'
+            .format(walk=walk, crouch=crouch, pounce=pounce, dash=dash, stand=stand,
+                    jump1=jump1, jump2=jump2, sit=sit, stretch=stretch) + flyby)
 
 
 # ---------------- sky ----------------
@@ -347,7 +451,7 @@ def gen_footer(w, s):
     cfg = SEASON_CFG[s]
     rnd = random.Random(f"footer-{s}")
     p = ['<defs><path id="fpetal" d="M0 0 C-4 -5 -4 -13 0 -17 C4 -13 4 -5 0 0 Z"/>'
-         '<path id="fleaf" d="M0 0 Q-7 -3 -9 -10 Q-3 -8 0 0 Z"/>' + NEKO_DEFS + '</defs>']
+         '<path id="fleaf" d="M0 0 Q-7 -3 -9 -10 Q-3 -8 0 0 Z"/></defs>']
     g, gop = cfg["ground"]
     p.append(f'<ellipse cx="450" cy="152" rx="480" ry="26" fill="{g}" opacity="{gop}"/>')
     if s == "winter":
@@ -442,7 +546,7 @@ def gen_footer(w, s):
 
     def wrap(inner):
         return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" width="900" height="140">\n'
-                '<title>garden footer - cat: Neko sprites via adryd325/oneko.js</title>' + inner + '</svg>\n')
+                '<title>garden footer</title>' + inner + '</svg>\n')
 
     day = wrap("".join(p))
     night = wrap(stars(9, 20, 880, 8, 52, 13) + nightify("".join(p)))
