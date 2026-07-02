@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">
+  <title>yuki4266 — tech garden</title>
+
+  <!-- vine -->
+  <path d="M40 12 C30 78 52 140 40 200 C30 258 48 296 40 326" stroke="#7FA36B" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="360" stroke-dashoffset="360" opacity="0.8">
+    <animate attributeName="stroke-dashoffset" from="360" to="0" begin="0s" dur="1.6s" calcMode="spline" keyTimes="0;1" keySplines="0.3 0 0.3 1" fill="freeze"/>
+  </path>
+
+  <!-- ============ row 1 : LLMs (y=50) ============ -->
+  <g transform="translate(52,50)">
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="0.25s" dur="0.4s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="scale" from="0" to="1" begin="0.25s" dur="0.5s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.9 0.3 1" fill="freeze"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" begin="1s" dur="16s" repeatCount="indefinite"/>
+        <circle cx="0" cy="-6.5" r="3.4" fill="#F4795B"/><circle cx="6.2" cy="-2" r="3.4" fill="#F4795B"/><circle cx="3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-6.2" cy="-2" r="3.4" fill="#F4795B"/>
+      </g>
+      <circle r="2.8" fill="#E2542F"/>
+    </g>
+  </g>
+  <text x="70" y="54" font-size="11" letter-spacing="1.5" fill="#8b949e" opacity="0">LLMS
+    <animate attributeName="opacity" from="0" to="1" begin="0.3s" dur="0.5s" fill="freeze"/>
+  </text>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.5s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="195" y="39" width="70" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="230" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Claude</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.57s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.57s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="275" y="39" width="70" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="310" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">Gemini</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.64s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.64s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="355" y="39" width="84" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="397" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">DeepSeek</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.71s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.71s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="449" y="39" width="55" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="476.5" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">Qwen</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.78s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.78s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="514" y="39" width="63" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="545.5" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Llama</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.85s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.85s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="587" y="39" width="77" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="625.5" y="54" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">Mistral</text>
+  </g>
+
+  <!-- ============ row 2 : Agent Frameworks (y=112) ============ -->
+  <g transform="translate(52,112)">
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="0.53s" dur="0.4s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="scale" from="0" to="1" begin="0.53s" dur="0.5s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.9 0.3 1" fill="freeze"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="-360" begin="1.2s" dur="18s" repeatCount="indefinite"/>
+        <circle cx="0" cy="-6.5" r="3.4" fill="#ED8B66"/><circle cx="6.2" cy="-2" r="3.4" fill="#ED8B66"/><circle cx="3.8" cy="5.3" r="3.4" fill="#ED8B66"/><circle cx="-3.8" cy="5.3" r="3.4" fill="#ED8B66"/><circle cx="-6.2" cy="-2" r="3.4" fill="#ED8B66"/>
+      </g>
+      <circle r="2.8" fill="#E2542F"/>
+    </g>
+  </g>
+  <text x="70" y="116" font-size="11" letter-spacing="1.5" fill="#8b949e" opacity="0">AGENTS
+    <animate attributeName="opacity" from="0" to="1" begin="0.58s" dur="0.5s" fill="freeze"/>
+  </text>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.78s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.78s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="195" y="101" width="92" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="241" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">LangGraph</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.85s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.85s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="297" y="101" width="92" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="343" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">LangChain</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.92s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.92s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="399" y="101" width="99" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="448.5" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">LlamaIndex</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="0.99s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="0.99s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="508" y="101" width="70" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="543" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">CrewAI</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.06s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.06s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="588" y="101" width="48" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="612" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">MCP</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.13s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.13s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="646" y="101" width="55" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="673.5" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">Dify</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.2s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.2s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="711" y="101" width="48" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="735" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">n8n</text>
+  </g>
+
+  <!-- ============ row 3 : Inference & Serving (y=174) ============ -->
+  <g transform="translate(52,174)">
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="0.81s" dur="0.4s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="scale" from="0" to="1" begin="0.81s" dur="0.5s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.9 0.3 1" fill="freeze"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" begin="1.4s" dur="20s" repeatCount="indefinite"/>
+        <circle cx="0" cy="-6.5" r="3.4" fill="#F4795B"/><circle cx="6.2" cy="-2" r="3.4" fill="#F4795B"/><circle cx="3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-6.2" cy="-2" r="3.4" fill="#F4795B"/>
+      </g>
+      <circle r="2.8" fill="#E2542F"/>
+    </g>
+  </g>
+  <text x="70" y="178" font-size="11" letter-spacing="1.5" fill="#8b949e" opacity="0">INFERENCE
+    <animate attributeName="opacity" from="0" to="1" begin="0.86s" dur="0.5s" fill="freeze"/>
+  </text>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.06s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.06s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="195" y="163" width="70" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="230" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Ollama</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.13s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.13s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="275" y="163" width="55" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="302.5" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">vLLM</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.2s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.2s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="340" y="163" width="114" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="397" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">Hugging Face</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.27s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.27s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="464" y="163" width="99" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="513.5" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">OpenRouter</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.34s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.34s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="573" y="163" width="70" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="608" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Gradio</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.41s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.41s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="653" y="163" width="92" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="699" y="178" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">Streamlit</text>
+  </g>
+
+  <!-- ============ row 4 : RAG & Data (y=236) ============ -->
+  <g transform="translate(52,236)">
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="1.09s" dur="0.4s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="scale" from="0" to="1" begin="1.09s" dur="0.5s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.9 0.3 1" fill="freeze"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="-360" begin="1.6s" dur="17s" repeatCount="indefinite"/>
+        <circle cx="0" cy="-6.5" r="3.4" fill="#ED8B66"/><circle cx="6.2" cy="-2" r="3.4" fill="#ED8B66"/><circle cx="3.8" cy="5.3" r="3.4" fill="#ED8B66"/><circle cx="-3.8" cy="5.3" r="3.4" fill="#ED8B66"/><circle cx="-6.2" cy="-2" r="3.4" fill="#ED8B66"/>
+      </g>
+      <circle r="2.8" fill="#E2542F"/>
+    </g>
+  </g>
+  <text x="70" y="240" font-size="11" letter-spacing="1.5" fill="#8b949e" opacity="0">RAG / DATA
+    <animate attributeName="opacity" from="0" to="1" begin="1.14s" dur="0.5s" fill="freeze"/>
+  </text>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.34s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.34s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="195" y="225" width="70" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="230" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Qdrant</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.41s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.41s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="275" y="225" width="70" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="310" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">Milvus</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.48s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.48s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="355" y="225" width="84" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="397" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">pgvector</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.55s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.55s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="449" y="225" width="63" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="480.5" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">Redis</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.62s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.62s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="522" y="225" width="84" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="564" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Supabase</text>
+  </g>
+
+  <!-- ============ row 5 : Languages & Tools (y=298) ============ -->
+  <g transform="translate(52,298)">
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="1.37s" dur="0.4s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="scale" from="0" to="1" begin="1.37s" dur="0.5s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.9 0.3 1" fill="freeze"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" begin="1.8s" dur="19s" repeatCount="indefinite"/>
+        <circle cx="0" cy="-6.5" r="3.4" fill="#F4795B"/><circle cx="6.2" cy="-2" r="3.4" fill="#F4795B"/><circle cx="3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-3.8" cy="5.3" r="3.4" fill="#F4795B"/><circle cx="-6.2" cy="-2" r="3.4" fill="#F4795B"/>
+      </g>
+      <circle r="2.8" fill="#E2542F"/>
+    </g>
+  </g>
+  <text x="70" y="302" font-size="11" letter-spacing="1.5" fill="#8b949e" opacity="0">LANG / OPS
+    <animate attributeName="opacity" from="0" to="1" begin="1.42s" dur="0.5s" fill="freeze"/>
+  </text>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.62s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.62s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="195" y="287" width="70" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="230" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">Python</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.69s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.69s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="275" y="287" width="99" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="324.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">TypeScript</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.76s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.76s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="384" y="287" width="55" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="411.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">Rust</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.83s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.83s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="449" y="287" width="41" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="469.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">Go</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.9s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.9s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="500" y="287" width="77" height="22" rx="11" fill="#E2542F" fill-opacity="0.07" stroke="#E2542F" stroke-width="1.3"/>
+    <text x="538.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#E2542F">PyTorch</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.97s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="1.97s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="587" y="287" width="77" height="22" rx="11" fill="#F4795B" fill-opacity="0.07" stroke="#F4795B" stroke-width="1.3"/>
+    <text x="625.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#F4795B">FastAPI</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="2.04s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="2.04s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="674" y="287" width="70" height="22" rx="11" fill="#ED8B66" fill-opacity="0.07" stroke="#ED8B66" stroke-width="1.3"/>
+    <text x="709" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#ED8B66">Docker</text>
+  </g>
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="2.11s" dur="0.45s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 8" to="0 0" begin="2.11s" dur="0.45s" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.3 1" fill="freeze"/>
+    <rect x="754" y="287" width="99" height="22" rx="11" fill="#7FA36B" fill-opacity="0.07" stroke="#7FA36B" stroke-width="1.3"/>
+    <text x="803.5" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#7FA36B">Kubernetes</text>
+  </g>
+</svg>
