@@ -50,8 +50,6 @@
 &nbsp;
 <img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=yuki4266&hide_border=true&background=00000000&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333" />
 
-<img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yuki4266&layout=compact&langs_count=8&hide_border=true&bg_color=00000000&title_color=F4795B&text_color=555555" />
-
 </div>
 
 <br/>
