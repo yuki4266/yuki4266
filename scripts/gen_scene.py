@@ -276,11 +276,11 @@ def cat_gait(gait_dur, amp, bob, tail_vals, tail_dur):
 
 
 def cat_pose_walk():
-    return cat_gait(0.5, 18, 1.4, "-8;8;-8", 1.4)
+    return cat_gait(0.55, 11, 2.2, "-7;7;-7", 1.4)
 
 
 def cat_pose_dash():
-    return cat_gait(0.32, 24, 2.0, "-26;-14;-26", 0.4)
+    return cat_gait(0.34, 17, 2.6, "-26;-14;-26", 0.4)
 
 
 def cat_pose_sit():
