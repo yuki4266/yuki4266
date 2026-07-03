@@ -374,17 +374,17 @@ def cat_pose_fall():
 
 
 def cat_pose_hop():
-    """Airborne tuck — Luo Xiaohei stays a compact round ball, legs tucked, tail curled up.
-    No elongation: the round silhouette is preserved through the whole hop."""
+    """Airborne tuck — Luo Xiaohei curls into a compact round ball, paws pulled IN
+    (not dangling), tail curled up. The round silhouette reads clearly as 'jumping'."""
+    hop_body = ('M-12 -22 C -5 -28 8 -28 13.5 -21.5 C 17 -17.3 17 -10 13.2 -6.2 '
+                'C 7.5 -0.8 -6 -0.6 -11.5 -5.6 C -15.3 -9.2 -15 -18 -12 -22 Z')
     return ('<g>'
-            f'<g transform="translate(12.5,-19)"><path d="M0 0 C 6.5 -3 9 -11 5 -17 C 3.4 -19.5 0.8 -20 -0.6 -18.6" stroke="{C}" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>'
-            + f'<path d="{CAT_BODY}" fill="{C}"/>'
-            # four paws tucked as little bumps along the belly
-            + f'<ellipse cx="-8" cy="-6" rx="2.7" ry="1.9" fill="{C}"/>'
-            + f'<ellipse cx="-2.5" cy="-5.4" rx="2.7" ry="1.9" fill="{C}"/>'
-            + f'<ellipse cx="3.5" cy="-5.4" rx="2.7" ry="1.9" fill="{C}"/>'
-            + f'<ellipse cx="9.5" cy="-6" rx="2.7" ry="1.9" fill="{C}"/>'
-            + f'<g transform="translate(-15.5,-22.5)">{cat_head()}</g>'
+            f'<g transform="translate(12.6,-19)"><path d="M0 0 C 6.5 -3 9 -11 5 -17 C 3.4 -19.5 0.8 -20 -0.6 -18.6" stroke="{C}" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>'
+            + f'<path d="{hop_body}" fill="{C}"/>'
+            # two front paws tucked up against the chest (curled, not hanging)
+            + f'<path d="M-10.5 -7 C -12.8 -6.4 -13.2 -9 -11.4 -10.3 C -10.1 -11.2 -8.7 -10.4 -8.6 -8.9 Z" fill="{C}"/>'
+            + f'<path d="M-6.8 -6.6 C -9 -6 -9.4 -8.4 -7.7 -9.6 C -6.5 -10.4 -5.2 -9.7 -5.2 -8.3 Z" fill="{C}" opacity="0.82"/>'
+            + f'<g transform="translate(-15,-23)">{cat_head()}</g>'
             '</g>')
 
 
