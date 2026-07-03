@@ -220,27 +220,32 @@ def butterfly_patrol(path, dur):
 
 
 # ---------------- cat ----------------
-EYE = "#63D2C3"  # 罗小黑 teal-green eyes
+EYE = "#5DC98A"       # 罗小黑 green eyes
+INNER_EAR = "#79C77A"  # green inner ears
+MOUTH = "#2C3E63"      # dark-blue mouth
 
 
 def cat_head(blink=False, twitch=False):
-    # 罗小黑 (Luo Xiaohei): big round head, two big teal eyes, small ears — chibi head
+    # 罗小黑 (Luo Xiaohei): round all-black head DOMINATED by two huge green eyes
+    # (~2/3 of the face), green inner ears, tiny dark-blue mouth.
     def eyeball(cx, cy, rx, ry):
-        pr, pry = rx * 0.5, ry * 0.62
-        ba = (f'<animate attributeName="ry" values="{ry};{ry};0.16;{ry}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
-        pa = (f'<animate attributeName="ry" values="{pry:.2f};{pry:.2f};0.1;{pry:.2f}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
+        pr, pry = rx * 0.62, ry * 0.66      # large round pupil (dim-light cat eye)
+        ba = (f'<animate attributeName="ry" values="{ry};{ry};0.18;{ry}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
+        pa = (f'<animate attributeName="ry" values="{pry:.2f};{pry:.2f};0.12;{pry:.2f}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
         return (f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{EYE}">{ba}</ellipse>'
-                f'<ellipse cx="{cx - 0.2}" cy="{cy + 0.5}" rx="{pr:.2f}" ry="{pry:.2f}" fill="#1F2E2A">{pa}</ellipse>'
-                f'<circle cx="{cx - 0.8}" cy="{cy - ry * 0.4:.2f}" r="{rx * 0.34:.2f}" fill="#ffffff"/>')
+                f'<ellipse cx="{cx - 0.1}" cy="{cy + 0.5}" rx="{pr:.2f}" ry="{pry:.2f}" fill="#17251C">{pa}</ellipse>'
+                f'<circle cx="{cx - 1.0}" cy="{cy - ry * 0.42:.2f}" r="{rx * 0.34:.2f}" fill="#ffffff"/>'
+                f'<circle cx="{cx + 0.9}" cy="{cy + ry * 0.32:.2f}" r="{rx * 0.16:.2f}" fill="#ffffff" opacity="0.8"/>')
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
                 f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
-    return (f'<g>{ear_anim}<path d="M-8 -6 L-7.4 -15 L-1.6 -8 Z" fill="{C}"/>'
-            f'<path d="M-6.9 -7.6 L-6.4 -12.6 L-3.4 -8.7 Z" fill="{PEACH}" opacity="0.55"/></g>'
-            f'<path d="M2 -8 L7.6 -15 L8.2 -6 Z" fill="{C}"/>'
-            f'<path d="M3.2 -8.4 L6.5 -12.6 L7 -7.5 Z" fill="{PEACH}" opacity="0.55"/>'
-            f'<circle r="9.4" fill="{C}"/>'
-            + eyeball(-4.8, -1.4, 3.1, 3.4)
-            + eyeball(2.6, -1.8, 2.2, 2.9))
+    return (f'<g>{ear_anim}<path d="M-8.4 -6.2 L-7.8 -16 L-1.4 -8.2 Z" fill="{C}"/>'
+            f'<path d="M-7.2 -8 L-6.7 -13.4 L-3.4 -9.2 Z" fill="{INNER_EAR}"/></g>'
+            f'<path d="M1.6 -8.2 L8 -16 L8.6 -6.2 Z" fill="{C}"/>'
+            f'<path d="M2.9 -9.2 L6.4 -13.4 L6.9 -8 Z" fill="{INNER_EAR}"/>'
+            f'<circle r="9.6" fill="{C}"/>'
+            f'<path d="M-5.4 4.6 Q-6.8 5.6 -8.1 4.7" stroke="{MOUTH}" stroke-width="1" fill="none" stroke-linecap="round"/>'
+            + eyeball(-4.3, -0.8, 3.9, 4.6)
+            + eyeball(4.0, -1.1, 3.2, 4.1))
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
