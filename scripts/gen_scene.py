@@ -373,6 +373,21 @@ def cat_pose_fall():
             '</g>')
 
 
+def cat_pose_hop():
+    """Airborne tuck — Luo Xiaohei stays a compact round ball, legs tucked, tail curled up.
+    No elongation: the round silhouette is preserved through the whole hop."""
+    return ('<g>'
+            f'<g transform="translate(12.5,-19)"><path d="M0 0 C 6.5 -3 9 -11 5 -17 C 3.4 -19.5 0.8 -20 -0.6 -18.6" stroke="{C}" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>'
+            + f'<path d="{CAT_BODY}" fill="{C}"/>'
+            # four paws tucked as little bumps along the belly
+            + f'<ellipse cx="-8" cy="-6" rx="2.7" ry="1.9" fill="{C}"/>'
+            + f'<ellipse cx="-2.5" cy="-5.4" rx="2.7" ry="1.9" fill="{C}"/>'
+            + f'<ellipse cx="3.5" cy="-5.4" rx="2.7" ry="1.9" fill="{C}"/>'
+            + f'<ellipse cx="9.5" cy="-6" rx="2.7" ry="1.9" fill="{C}"/>'
+            + f'<g transform="translate(-15.5,-22.5)">{cat_head()}</g>'
+            '</g>')
+
+
 def cat_pose_stand():
     return ('<g>'
             + slim_leg(-8, -11, -8.5, 0, 3.4) + slim_leg(-5, -11, -4.5, 0, 3.4, True)
@@ -425,22 +440,22 @@ def cat_show(season):
         # each sample: (t, y, x, pitch, sx, sy) — sx/sy carry squash & stretch synced to speed
         pts = []
         n = max(int(t_thrust / dt), 1)
-        for i in range(n):                                   # thrust: load squash -> explosive stretch
+        for i in range(n):                                   # thrust: gentle load squash -> pop
             f = i / n
             sq = math.sin(math.pi * f)
-            pts.append((f * t_thrust, -4.0 * sq, 0.0, 10.0 * f, 1 + 0.16 * sq, 1 - 0.22 * sq))
+            pts.append((f * t_thrust, -3.0 * sq, 0.0, 4.0 * f, 1 + 0.10 * sq, 1 - 0.13 * sq))
         tf = 0.0
-        while tf <= t_flight + 1e-9:                         # flight: exact gravity parabola
+        while tf <= t_flight + 1e-9:                         # flight: exact gravity parabola, round shape kept
             y = v0 * tf - 0.5 * g * tf * tf
             sp = min(abs(v0 - g * tf) / v0, 1.0)             # normalized vertical speed
-            pitch = 6.0 * (1 - tf / t_up) if tf <= t_up else -8.0 * ((tf - t_up) / t_up)
-            pts.append((t_thrust + tf, y, forward * (tf / t_flight), pitch, 1 - 0.15 * sp, 1 + 0.30 * sp))
+            pitch = 3.0 * (1 - tf / t_up) if tf <= t_up else -3.0 * ((tf - t_up) / t_up)
+            pts.append((t_thrust + tf, y, forward * (tf / t_flight), pitch, 1 - 0.05 * sp, 1 + 0.10 * sp))
             tf += dt
         n = max(int(t_absorb / dt), 1)
         for i in range(1, n + 1):                            # absorb: splat squash on impact, spring back
             f = i / n
             sq = math.sin(math.pi * f)
-            pts.append((t_thrust + t_flight + f * t_absorb, -8.0 * sq, forward, -8.0 * (1 - f), 1 + 0.26 * sq, 1 - 0.28 * sq))
+            pts.append((t_thrust + t_flight + f * t_absorb, -6.0 * sq, forward, -3.0 * (1 - f), 1 + 0.18 * sq, 1 - 0.18 * sq))
         pts.append((total, 0.0, forward, 0.0, 1.0, 1.0))     # settle
         kts, tv, rv, sv = ["0"], ["0 0"], ["0 0 -20"], ["1 1"]
         for (t, y, x, pitch, sx, sy) in pts:
@@ -455,12 +470,11 @@ def cat_show(season):
         squash = f'<animateTransform attributeName="transform" type="scale" values="{";".join(sv)}" keyTimes="{kt}" calcMode="linear" {CYC}/>'
         pb = lambda tt: t0 + (tt / total) * (t1 - t0)
         e_th, e_ap, e_fl = pb(t_thrust), pb(t_thrust + t_up), pb(t_thrust + t_flight)
-        rear = pose.format(v="0;1;0", k=f"0;{t0};{e_th:.4f}", body=f'<g transform="rotate(8)">{cat_pose_reach()}</g>')
-        rise = pose.format(v="0;1;0", k=f"0;{e_th:.4f};{e_ap:.4f}", body=cat_pose_jump_up())
-        fall = pose.format(v="0;1;0", k=f"0;{e_ap:.4f};{e_fl:.4f}", body=cat_pose_fall())
+        # one compact round tuck for the whole airborne arc (no ugly elongation), crouch on landing
+        hop = pose.format(v="0;1;0", k=f"0;{t0};{e_fl:.4f}", body=cat_pose_hop())
         touch = pose.format(v="0;1;0", k=f"0;{e_fl:.4f};{t1}", body=cat_pose_crouch())
-        # nesting: translate(arc) > rotate(spin, about body-centre) > scale(squash, about feet) > pose swaps
-        return f'<g>{arc}<g>{spin}<g>{squash}{rear}{rise}{fall}{touch}</g></g></g>' + puff(e_fl)
+        # nesting: translate(arc) > rotate(spin, about body-centre) > scale(squash, about centre) > pose swaps
+        return f'<g>{arc}<g>{spin}<g>{squash}{hop}{touch}</g></g></g>' + puff(e_fl)
 
     jump1 = jump(0.362, 0.376, 50)
     jump2 = jump(0.408, 0.423, 66)
