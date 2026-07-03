@@ -449,7 +449,7 @@ def cat_show(season):
     return ('<g><animateTransform attributeName="transform" type="translate" '
             f'values="950 0;950 0;560 0;560 0;480 0;300 0;300 0;-140 0;-140 0" '
             f'keyTimes="0;0.04;0.15;0.20;0.235;0.30;0.60;0.70;1" {CYC}/>'
-            f'<g transform="translate(0,130)">{{walk}}{{crouch}}{{pounce}}{{dash}}{{stand}}{{jump1}}{{jump2}}{{sit}}{{stretch}}</g></g>'
+            f'<g transform="translate(0,132) scale(1.7)">{{walk}}{{crouch}}{{pounce}}{{dash}}{{stand}}{{jump1}}{{jump2}}{{sit}}{{stretch}}</g></g>'
             .format(walk=walk, crouch=crouch, pounce=pounce, dash=dash, stand=stand,
                     jump1=jump1, jump2=jump2, sit=sit, stretch=stretch) + flyby)
 
@@ -616,7 +616,8 @@ def gen_footer(w, s):
         p.append(snow_anim(random.Random(f"fsnow-{s}"), 140))
 
     def wrap(inner):
-        return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" width="900" height="140">\n'
+        # extra headroom above the grass so the (now larger) cat can jump up into frame
+        return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -78 900 218" width="900" height="218">\n'
                 '<title>garden footer</title>' + inner + '</svg>\n')
 
     day = wrap("".join(p))
