@@ -221,12 +221,17 @@ def butterfly_patrol(path, dur):
 
 # ---------------- cat ----------------
 def cat_head(blink=False, twitch=False):
-    # clean all-black silhouette: round head + small ears, no facial features
+    # clean all-black cat SIDE PROFILE silhouette (facing left): rounded skull,
+    # forehead dip, short muzzle + nose, chin, two ears. No eyes.
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
                 f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
-    return (f'<g>{ear_anim}<path d="M-7.2 -5 L-6.6 -12.8 L-1.6 -6.8 Z" fill="{C}"/></g>'
-            f'<path d="M1.6 -6.8 L6.4 -12.8 L7 -5 Z" fill="{C}"/>'
-            f'<circle r="8.2" fill="{C}"/>')
+    return (f'<g>{ear_anim}<path d="M-6.8 -5.2 L-6.4 -12.8 L-1.4 -7 Z" fill="{C}"/></g>'
+            f'<path d="M1.8 -7 L6.6 -12.8 L7 -5 Z" fill="{C}"/>'
+            # smooth profile outline: over the skull -> forehead -> softly pointed nose ->
+            # rounded chin -> underside -> back of head
+            f'<path d="M6 -5.4 C 8.4 -2.4 8.4 3 4.6 5.4 C 1 7 -4 6.8 -7 5.6 '
+            f'C -9.5 4.6 -10.9 2.2 -10.7 0.4 C -10.5 -1.1 -9.4 -2.3 -7.8 -3 '
+            f'C -6.7 -3.9 -6.7 -5.1 -5.3 -6.2 C -2.4 -8 3 -7.8 6 -5.4 Z" fill="{C}"/>')
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
