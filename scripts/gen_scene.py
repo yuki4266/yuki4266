@@ -259,8 +259,8 @@ def slim_leg(x1, y1, x2, y2, w=3.2, faded=False):
     return f'<path d="M{x1} {y1} L{x2} {y2}" stroke="{C}" stroke-width="{w}" stroke-linecap="round" fill="none"{op}/>'
 
 
-CAT_BODY = ('M-13 -24 C -6 -29.5 6 -30 12 -24.5 C 16 -20.5 17 -13.5 14.5 -9 C 13.4 -7.2 11.4 -6.4 9.4 -6.4 '
-            'L -7.4 -6.4 C -10.6 -6.4 -12.9 -9.2 -13.7 -13.2 C -14.4 -17.2 -14.2 -21.4 -13 -24 Z')
+CAT_BODY = ('M-12.5 -22 C -6 -26.5 6 -27 11.5 -22.5 C 15 -19 15.8 -13.5 13.8 -9.5 C 12.7 -7.6 10.8 -6.6 8.8 -6.6 '
+            'L -7 -6.6 C -10 -6.6 -12 -9 -12.9 -12.6 C -13.6 -16.2 -13.5 -19.6 -12.5 -22 Z')
 
 
 def cat_gait(gait_dur, amp, bob, tail_vals, tail_dur):
@@ -276,11 +276,11 @@ def cat_gait(gait_dur, amp, bob, tail_vals, tail_dur):
 
 
 def cat_pose_walk():
-    return cat_gait(0.55, 11, 2.2, "-7;7;-7", 1.4)
+    return cat_gait(0.55, 11, 2.2, "-15;9;-15", 1.1)
 
 
 def cat_pose_dash():
-    return cat_gait(0.34, 17, 2.6, "-26;-14;-26", 0.4)
+    return cat_gait(0.34, 17, 2.6, "-28;-12;-28", 0.4)
 
 
 def cat_pose_sit():
@@ -288,7 +288,7 @@ def cat_pose_sit():
             f'keyTimes="0;0.492;0.50;0.51;0.518;1" {CYC}/>')
     return ('<g>'
             f'<g transform="translate(12,-2)"><path d="M0 0 C 3 2.5 -1 4.2 -7 4 C -13.5 3.8 -18 2.2 -19.5 0.2" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round">'.replace("{C}", C)
-            + f'<animateTransform attributeName="transform" type="rotate" values="0;0;7;0;0" keyTimes="0;0.7;0.79;0.88;1" dur="6s" repeatCount="indefinite"/></path></g>'
+            + f'<animateTransform attributeName="transform" type="rotate" values="-7;6;-7" {SPLINE2} dur="2.8s" repeatCount="indefinite"/></path></g>'
             + '<g><animateTransform attributeName="transform" type="scale" values="1 1;1 1.018;1 1" keyTimes="0;0.5;1" dur="3.4s" repeatCount="indefinite"/>'
             + f'<path d="M-9.5 0 C -10.5 -7 -9.5 -15 -5.5 -20.5 C -2.5 -24.5 3.5 -26 8 -23.5 C 12.5 -21 14.5 -15.5 14 -9.5 C 13.7 -5.5 12.8 -2 12 0 Z" fill="{C}"/>'
             + f'<rect x="-9.2" y="-10" width="3.2" height="10" rx="1.5" fill="{C}"/>'
