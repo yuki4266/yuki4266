@@ -5,6 +5,7 @@ Runs in CI every few hours. Deterministic per (weather, season) so unchanged sta
 Usage: gen_scene.py [--weather clear|clouds|rain|snow|fog|storm] [--season spring|summer|autumn|winter] [--force]
 """
 import json
+import math
 import random
 import re
 import sys
@@ -388,25 +389,54 @@ def cat_show(season):
                 '<circle cx="-8" cy="-2" r="2" fill="#BFB49F"/><circle cx="8" cy="-2" r="2.2" fill="#BFB49F"/>'
                 '<circle cx="0" cy="-4" r="1.7" fill="#BFB49F"/></g></g>')
 
-    def jump(t0, apex, t1, h):
-        """Real cat jump: rear up on hind legs -> explosive launch (up + slightly forward) ->
-        hang at apex -> nose-down descent -> forepaws-first touchdown absorb -> (crouch follows)."""
-        launch = t0 + 0.006
-        tland = t1 - 0.007
+    def jump(t0, t1, h, forward=-4.0):
+        """Baked physics. Newtonian projectile integrated offline: a short ground-contact
+        thrust brings the CoM from rest to v0 = sqrt(2gh), then ballistic flight under
+        gravity g traces a true parabola (fast rise -> apex dwell -> accelerating fall),
+        then landing compression absorbs the impact. Sampled every ~10ms so SMIL linear
+        interpolation reproduces the real trajectory instead of an eyeballed spline."""
+        g = 1600.0
+        v0 = (2 * g * h) ** 0.5
+        t_up = v0 / g
+        t_thrust, t_flight, t_absorb, t_settle = 0.11, 2 * t_up, 0.13, 0.09
+        total = t_thrust + t_flight + t_absorb + t_settle
+        dt = 0.01
+        pts = []
+        n = max(int(t_thrust / dt), 1)
+        for i in range(n):                                   # thrust: anticipation dip -> extension
+            f = i / n
+            pts.append((f * t_thrust, -4.0 * math.sin(math.pi * f), 0.0, 10.0 * f))
+        tf = 0.0
+        while tf <= t_flight + 1e-9:                         # flight: exact gravity parabola
+            y = v0 * tf - 0.5 * g * tf * tf
+            pitch = 6.0 * (1 - tf / t_up) if tf <= t_up else -8.0 * ((tf - t_up) / t_up)
+            pts.append((t_thrust + tf, y, forward * (tf / t_flight), pitch))
+            tf += dt
+        n = max(int(t_absorb / dt), 1)
+        for i in range(1, n + 1):                            # absorb: compress on impact, spring back
+            f = i / n
+            pts.append((t_thrust + t_flight + f * t_absorb, -8.0 * math.sin(math.pi * f), forward, -8.0 * (1 - f)))
+        pts.append((total, 0.0, forward, 0.0))               # settle
+        kts, tv, rv = ["0"], ["0 0"], ["0"]
+        for (t, y, x, pitch) in pts:
+            kts.append(f"{t0 + (t / total) * (t1 - t0):.4f}")
+            tv.append(f"{x:.1f} {-y:.1f}")
+            rv.append(f"{-pitch:.1f}")
+        kts.append("1"); tv.append("0 0"); rv.append("0")
         arc = ('<animateTransform attributeName="transform" type="translate" '
-               f'values="0 0;0 0;-5 {-(h - 3)};-7 {-h};-5 {-(h - 2)};0 0;0 0" '
-               f'keyTimes="0;{launch:.4f};{apex - 0.0035:.4f};{apex};{apex + 0.0035:.4f};{tland:.4f};1" '
-               'calcMode="spline" keySplines="0 0 1 1;0.1 0.9 0.3 1;0.4 0 0.6 1;0.4 0 0.6 1;0.6 0 1 0.4;0 0 1 1" '
-               f'{CYC}/>')
-        rear = pose.format(v="0;1;0", k=f"0;{t0};{launch:.4f}",
-                           body=f'<g transform="rotate(12)">{cat_pose_reach()}</g>')
-        rise = pose.format(v="0;1;0", k=f"0;{launch:.4f};{apex}", body=cat_pose_jump_up())
-        fall = pose.format(v="0;1;0", k=f"0;{apex};{tland:.4f}", body=cat_pose_fall())
-        touch = pose.format(v="0;1;0", k=f"0;{tland:.4f};{t1}", body=cat_pose_stretch())
-        return f'<g>{arc}{rear}{rise}{fall}{touch}</g>' + puff(tland)
+               f'values="{";".join(tv)}" keyTimes="{";".join(kts)}" calcMode="linear" {CYC}/>')
+        spin = ('<animateTransform attributeName="transform" type="rotate" additive="sum" '
+                f'values="{";".join(rv)}" keyTimes="{";".join(kts)}" calcMode="linear" {CYC}/>')
+        pb = lambda tt: t0 + (tt / total) * (t1 - t0)
+        e_th, e_ap, e_fl = pb(t_thrust), pb(t_thrust + t_up), pb(t_thrust + t_flight)
+        rear = pose.format(v="0;1;0", k=f"0;{t0};{e_th:.4f}", body=f'<g transform="rotate(10)">{cat_pose_reach()}</g>')
+        rise = pose.format(v="0;1;0", k=f"0;{e_th:.4f};{e_ap:.4f}", body=cat_pose_jump_up())
+        fall = pose.format(v="0;1;0", k=f"0;{e_ap:.4f};{e_fl:.4f}", body=cat_pose_fall())
+        touch = pose.format(v="0;1;0", k=f"0;{e_fl:.4f};{t1}", body=cat_pose_stretch())
+        return f'<g>{arc}<g>{spin}{rear}{rise}{fall}{touch}</g></g>' + puff(e_fl)
 
-    jump1 = jump(0.37, 0.386, 0.405, 50)
-    jump2 = jump(0.435, 0.456, 0.475, 66)
+    jump1 = jump(0.37, 0.405, 50)
+    jump2 = jump(0.435, 0.475, 66)
     sit = pose.format(v="0;1;0", k="0;0.49;0.55", body=cat_pose_sit())
     stretch = pose.format(v="0;1;0", k="0;0.55;0.60", body=cat_pose_stretch())
     flyby = ""
