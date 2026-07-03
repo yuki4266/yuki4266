@@ -349,8 +349,17 @@ def cat_pose_jump_up():
 
 
 def cat_pose_fall():
-    """Airborne, descending: tilted nose-down, forelegs extended as landing gear."""
-    return cat_pose_pounce().replace('rotate(-16)', 'rotate(14)', 1)
+    """Airborne, descending vertically: body upright, forepaws reaching DOWN as landing
+    gear, hind legs tucked, tail up for balance, head looking down at the ground."""
+    return ('<g>'
+            f'<g transform="translate(6,-9)"><path d="M0 0 C 7 -2 10 -9 7 -16" stroke="{C}" stroke-width="3.3" fill="none" stroke-linecap="round"/></g>'
+            + slim_leg(-2, -12, -5, -4, 3.3)
+            + slim_leg(4, -12, 7, -4, 3.3, True)
+            + f'<path d="M-5.5 -8 C -8.5 -14 -8 -25 -3.5 -31.5 C -0.5 -35.5 5 -35 7.5 -30.5 C 10.5 -25 10 -14 7 -7 C 5.5 -3.8 2.5 -3 -0.5 -4 Z" fill="{C}"/>'
+            + slim_leg(-3, -9, -6, 7, 3.2)
+            + slim_leg(3.5, -9, 6, 7, 3.2, True)
+            + f'<g transform="translate(-1,-33) rotate(10)">{cat_head()}</g>'
+            '</g>')
 
 
 def cat_pose_stand():
@@ -401,39 +410,45 @@ def cat_show(season):
         t_thrust, t_flight, t_absorb, t_settle = 0.11, 2 * t_up, 0.13, 0.09
         total = t_thrust + t_flight + t_absorb + t_settle
         dt = 0.01
+        # each sample: (t, y, x, pitch, sx, sy) — sx/sy carry squash & stretch synced to speed
         pts = []
         n = max(int(t_thrust / dt), 1)
-        for i in range(n):                                   # thrust: anticipation dip -> extension
+        for i in range(n):                                   # thrust: load squash -> explosive stretch
             f = i / n
-            pts.append((f * t_thrust, -4.0 * math.sin(math.pi * f), 0.0, 10.0 * f))
+            sq = math.sin(math.pi * f)
+            pts.append((f * t_thrust, -4.0 * sq, 0.0, 10.0 * f, 1 + 0.16 * sq, 1 - 0.22 * sq))
         tf = 0.0
         while tf <= t_flight + 1e-9:                         # flight: exact gravity parabola
             y = v0 * tf - 0.5 * g * tf * tf
+            sp = min(abs(v0 - g * tf) / v0, 1.0)             # normalized vertical speed
             pitch = 6.0 * (1 - tf / t_up) if tf <= t_up else -8.0 * ((tf - t_up) / t_up)
-            pts.append((t_thrust + tf, y, forward * (tf / t_flight), pitch))
+            pts.append((t_thrust + tf, y, forward * (tf / t_flight), pitch, 1 - 0.15 * sp, 1 + 0.30 * sp))
             tf += dt
         n = max(int(t_absorb / dt), 1)
-        for i in range(1, n + 1):                            # absorb: compress on impact, spring back
+        for i in range(1, n + 1):                            # absorb: splat squash on impact, spring back
             f = i / n
-            pts.append((t_thrust + t_flight + f * t_absorb, -8.0 * math.sin(math.pi * f), forward, -8.0 * (1 - f)))
-        pts.append((total, 0.0, forward, 0.0))               # settle
-        kts, tv, rv = ["0"], ["0 0"], ["0"]
-        for (t, y, x, pitch) in pts:
+            sq = math.sin(math.pi * f)
+            pts.append((t_thrust + t_flight + f * t_absorb, -8.0 * sq, forward, -8.0 * (1 - f), 1 + 0.26 * sq, 1 - 0.28 * sq))
+        pts.append((total, 0.0, forward, 0.0, 1.0, 1.0))     # settle
+        kts, tv, rv, sv = ["0"], ["0 0"], ["0 0 -20"], ["1 1"]
+        for (t, y, x, pitch, sx, sy) in pts:
             kts.append(f"{t0 + (t / total) * (t1 - t0):.4f}")
             tv.append(f"{x:.1f} {-y:.1f}")
-            rv.append(f"{-pitch:.1f}")
-        kts.append("1"); tv.append("0 0"); rv.append("0")
-        arc = ('<animateTransform attributeName="transform" type="translate" '
-               f'values="{";".join(tv)}" keyTimes="{";".join(kts)}" calcMode="linear" {CYC}/>')
-        spin = ('<animateTransform attributeName="transform" type="rotate" additive="sum" '
-                f'values="{";".join(rv)}" keyTimes="{";".join(kts)}" calcMode="linear" {CYC}/>')
+            rv.append(f"{-pitch:.2f} 0 -20")
+            sv.append(f"{sx:.3f} {sy:.3f}")
+        kts.append("1"); tv.append("0 0"); rv.append("0 0 -20"); sv.append("1 1")
+        kt = ";".join(kts)
+        arc = f'<animateTransform attributeName="transform" type="translate" values="{";".join(tv)}" keyTimes="{kt}" calcMode="linear" {CYC}/>'
+        spin = f'<animateTransform attributeName="transform" type="rotate" values="{";".join(rv)}" keyTimes="{kt}" calcMode="linear" {CYC}/>'
+        squash = f'<animateTransform attributeName="transform" type="scale" values="{";".join(sv)}" keyTimes="{kt}" calcMode="linear" {CYC}/>'
         pb = lambda tt: t0 + (tt / total) * (t1 - t0)
         e_th, e_ap, e_fl = pb(t_thrust), pb(t_thrust + t_up), pb(t_thrust + t_flight)
-        rear = pose.format(v="0;1;0", k=f"0;{t0};{e_th:.4f}", body=f'<g transform="rotate(10)">{cat_pose_reach()}</g>')
+        rear = pose.format(v="0;1;0", k=f"0;{t0};{e_th:.4f}", body=f'<g transform="rotate(8)">{cat_pose_reach()}</g>')
         rise = pose.format(v="0;1;0", k=f"0;{e_th:.4f};{e_ap:.4f}", body=cat_pose_jump_up())
         fall = pose.format(v="0;1;0", k=f"0;{e_ap:.4f};{e_fl:.4f}", body=cat_pose_fall())
-        touch = pose.format(v="0;1;0", k=f"0;{e_fl:.4f};{t1}", body=cat_pose_stretch())
-        return f'<g>{arc}<g>{spin}{rear}{rise}{fall}{touch}</g></g>' + puff(e_fl)
+        touch = pose.format(v="0;1;0", k=f"0;{e_fl:.4f};{t1}", body=cat_pose_crouch())
+        # nesting: translate(arc) > rotate(spin, about body-centre) > scale(squash, about feet) > pose swaps
+        return f'<g>{arc}<g>{spin}<g>{squash}{rear}{rise}{fall}{touch}</g></g></g>' + puff(e_fl)
 
     jump1 = jump(0.37, 0.405, 50)
     jump2 = jump(0.435, 0.475, 66)
