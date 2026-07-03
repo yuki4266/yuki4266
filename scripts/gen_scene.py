@@ -380,17 +380,30 @@ def cat_show(season):
                                f'{CYC}/>' + cat_pose_pounce() + '</g>'))
     stand = pose.format(v="0;1;0", k="0;0.30;0.34", body=cat_pose_stand())
 
+    def puff(tl):
+        """Dust kicked up at touchdown."""
+        return ('<g opacity="0">'
+                f'<animate attributeName="opacity" values="0;0;0.5;0;0" keyTimes="0;{tl:.4f};{tl + 0.003:.4f};{tl + 0.009:.4f};1" {CYC}/>'
+                f'<g><animateTransform attributeName="transform" type="scale" values="0.3;0.3;1.6;0.3" keyTimes="0;{tl:.4f};{tl + 0.009:.4f};1" {CYC}/>'
+                '<circle cx="-8" cy="-2" r="2" fill="#BFB49F"/><circle cx="8" cy="-2" r="2.2" fill="#BFB49F"/>'
+                '<circle cx="0" cy="-4" r="1.7" fill="#BFB49F"/></g></g>')
+
     def jump(t0, apex, t1, h):
-        """Real cat ballistics: explosive launch, hang at apex, accelerating fall;
-        rising pose (stretched, paws up) swaps to falling pose (nose-down) past the apex."""
+        """Real cat jump: rear up on hind legs -> explosive launch (up + slightly forward) ->
+        hang at apex -> nose-down descent -> forepaws-first touchdown absorb -> (crouch follows)."""
+        launch = t0 + 0.006
+        tland = t1 - 0.007
         arc = ('<animateTransform attributeName="transform" type="translate" '
-               f'values="0 0;0 0;0 {-(h - 3)};0 {-h};0 {-(h - 2)};0 0;0 0" '
-               f'keyTimes="0;{t0};{apex - 0.0035:.4f};{apex};{apex + 0.0035:.4f};{t1};1" '
+               f'values="0 0;0 0;-5 {-(h - 3)};-7 {-h};-5 {-(h - 2)};0 0;0 0" '
+               f'keyTimes="0;{launch:.4f};{apex - 0.0035:.4f};{apex};{apex + 0.0035:.4f};{tland:.4f};1" '
                'calcMode="spline" keySplines="0 0 1 1;0.1 0.9 0.3 1;0.4 0 0.6 1;0.4 0 0.6 1;0.6 0 1 0.4;0 0 1 1" '
                f'{CYC}/>')
-        rise = pose.format(v="0;1;0", k=f"0;{t0};{apex}", body=cat_pose_jump_up())
-        fall = pose.format(v="0;1;0", k=f"0;{apex};{t1}", body=cat_pose_fall())
-        return f'<g>{arc}{rise}{fall}</g>'
+        rear = pose.format(v="0;1;0", k=f"0;{t0};{launch:.4f}",
+                           body=f'<g transform="rotate(12)">{cat_pose_reach()}</g>')
+        rise = pose.format(v="0;1;0", k=f"0;{launch:.4f};{apex}", body=cat_pose_jump_up())
+        fall = pose.format(v="0;1;0", k=f"0;{apex};{tland:.4f}", body=cat_pose_fall())
+        touch = pose.format(v="0;1;0", k=f"0;{tland:.4f};{t1}", body=cat_pose_stretch())
+        return f'<g>{arc}{rear}{rise}{fall}{touch}</g>' + puff(tland)
 
     jump1 = jump(0.37, 0.386, 0.405, 50)
     jump2 = jump(0.435, 0.456, 0.475, 66)
