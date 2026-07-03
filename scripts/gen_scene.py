@@ -220,27 +220,28 @@ def butterfly_patrol(path, dur):
 
 
 # ---------------- cat ----------------
+EYE = "#63D2C3"  # 罗小黑-style teal-green eyes
+
+
 def cat_head(blink=False, twitch=False):
-    # big rounded head, large sparkly eye, rosy cheek, tiny pink nose — kitten proportions
-    if blink:
-        eye = ('<ellipse cx="-5.4" cy="-1.8" rx="2.0" ry="2.0" fill="#FBE7D2">'
-               '<animate attributeName="ry" values="2;2;0.2;2" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/></ellipse>')
-    else:
-        eye = '<ellipse cx="-5.4" cy="-1.8" rx="2.0" ry="2.0" fill="#FBE7D2"/>'
-    catch = '<circle cx="-6.1" cy="-2.6" r="0.75" fill="#ffffff"/>'
+    # 罗小黑 (Luo Xiaohei) look: round black head, two big teal eyes, small ears.
+    # No muzzle / nose / whiskers — clean and minimal.
+    def eyeball(cx, cy, rx, ry):
+        pr, pry = rx * 0.52, ry * 0.64
+        ba = (f'<animate attributeName="ry" values="{ry};{ry};0.16;{ry}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
+        pa = (f'<animate attributeName="ry" values="{pry:.2f};{pry:.2f};0.1;{pry:.2f}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
+        return (f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{EYE}">{ba}</ellipse>'
+                f'<ellipse cx="{cx - 0.2}" cy="{cy + 0.4}" rx="{pr:.2f}" ry="{pry:.2f}" fill="#20302C">{pa}</ellipse>'
+                f'<circle cx="{cx - 0.7}" cy="{cy - ry * 0.42:.2f}" r="{rx * 0.32:.2f}" fill="#ffffff"/>')
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
                 f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
-    return (f'<path d="M-9.5 0.8 L-16.5 -0.6 M-9.3 2.6 L-16 3.2 M-8.9 4.2 L-15 5.6" stroke="{C}" stroke-width="0.7" opacity="0.5" fill="none"/>'
-            f'<g>{ear_anim}<path d="M-7.6 -3.4 L-9.4 -14 L-1.4 -7.4 Z" fill="{C}"/>'
-            f'<path d="M-6.9 -5.6 L-7.9 -11.6 L-3.7 -8 Z" fill="{PEACH}" opacity="0.6"/></g>'
-            f'<path d="M-0.2 -7.8 L4.8 -14.2 L6.1 -5.6 Z" fill="{C}"/>'
-            f'<path d="M0.9 -8.2 L4.0 -12.6 L5.0 -7.0 Z" fill="{PEACH}" opacity="0.6"/>'
-            f'<circle r="8" fill="{C}"/>'
-            f'<ellipse cx="-6.2" cy="2.3" rx="4.1" ry="3.1" fill="{C}"/>'
-            f'<path d="M-8.6 3.6 L-12 5.2 L-8.2 6.4 Z" fill="{C}"/>'
-            f'<ellipse cx="-6.6" cy="1.1" rx="2.3" ry="1.5" fill="{PEACH}" opacity="0.4"/>'
-            f'<path d="M-9.6 0.7 L-11.4 1.5 L-9.6 2.4 Z" fill="#F2A0A0"/>'
-            + eye + catch)
+    return (f'<g>{ear_anim}<path d="M-7.2 -5 L-6.6 -12.8 L-1.6 -6.8 Z" fill="{C}"/>'
+            f'<path d="M-6.2 -6.4 L-5.8 -10.8 L-3.2 -7.4 Z" fill="{PEACH}" opacity="0.55"/></g>'
+            f'<path d="M1.6 -6.8 L6.4 -12.8 L7 -5 Z" fill="{C}"/>'
+            f'<path d="M2.8 -7.2 L5.7 -10.8 L6.1 -6.4 Z" fill="{PEACH}" opacity="0.55"/>'
+            f'<circle r="8.2" fill="{C}"/>'
+            + eyeball(-4.2, -1.2, 2.7, 3.0)
+            + eyeball(2.2, -1.5, 1.95, 2.5))
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
