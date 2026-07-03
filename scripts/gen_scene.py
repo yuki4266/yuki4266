@@ -238,14 +238,14 @@ def cat_head(blink=False, twitch=False):
                 f'<circle cx="{cx + 0.9}" cy="{cy + ry * 0.32:.2f}" r="{rx * 0.16:.2f}" fill="#ffffff" opacity="0.8"/>')
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
                 f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
-    return (f'<g>{ear_anim}<path d="M-8.4 -6.2 L-7.8 -16 L-1.4 -8.2 Z" fill="{C}"/>'
-            f'<path d="M-7.2 -8 L-6.7 -13.4 L-3.4 -9.2 Z" fill="{INNER_EAR}"/></g>'
-            f'<path d="M1.6 -8.2 L8 -16 L8.6 -6.2 Z" fill="{C}"/>'
-            f'<path d="M2.9 -9.2 L6.4 -13.4 L6.9 -8 Z" fill="{INNER_EAR}"/>'
-            f'<circle r="9.6" fill="{C}"/>'
-            f'<path d="M-5.4 4.6 Q-6.8 5.6 -8.1 4.7" stroke="{MOUTH}" stroke-width="1" fill="none" stroke-linecap="round"/>'
-            + eyeball(-4.3, -0.8, 3.9, 4.6)
-            + eyeball(4.0, -1.1, 3.2, 4.1))
+    # side profile: one big green eye (contained in the face), tiny mouth near the snout
+    return (f'<g>{ear_anim}<path d="M-7.6 -5.6 L-7 -15 L-1.4 -7.6 Z" fill="{C}"/>'
+            f'<path d="M-6.5 -7.2 L-6 -12.4 L-3.2 -8.5 Z" fill="{INNER_EAR}"/></g>'
+            f'<path d="M2 -7.6 L7.4 -14.6 L8 -5.6 Z" fill="{C}"/>'
+            f'<path d="M3.2 -8.6 L6.2 -12.4 L6.7 -7.5 Z" fill="{INNER_EAR}"/>'
+            f'<circle r="9" fill="{C}"/>'
+            f'<path d="M-6.6 4.5 Q-7.8 5.4 -9 4.7" stroke="{MOUTH}" stroke-width="0.9" fill="none" stroke-linecap="round"/>'
+            + eyeball(-3.4, -0.6, 3.3, 3.9))
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
