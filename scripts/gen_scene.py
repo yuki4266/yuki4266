@@ -221,20 +221,26 @@ def butterfly_patrol(path, dur):
 
 # ---------------- cat ----------------
 def cat_head(blink=False, twitch=False):
-    eye = (f'<ellipse cx="-4.8" cy="-1.7" rx="1.1" ry="1.1" fill="{PEACH}">'
-           '<animate attributeName="ry" values="1.1;1.1;0.12;1.1" keyTimes="0;0.88;0.94;1" dur="5.2s" repeatCount="indefinite"/>'
-           '</ellipse>') if blink else f'<circle cx="-4.8" cy="-1.7" r="1.1" fill="{PEACH}"/>'
+    # big rounded head, large sparkly eye, rosy cheek, tiny pink nose — kitten proportions
+    if blink:
+        eye = ('<ellipse cx="-5.4" cy="-1.8" rx="2.0" ry="2.0" fill="#FBE7D2">'
+               '<animate attributeName="ry" values="2;2;0.2;2" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/></ellipse>')
+    else:
+        eye = '<ellipse cx="-5.4" cy="-1.8" rx="2.0" ry="2.0" fill="#FBE7D2"/>'
+    catch = '<circle cx="-6.1" cy="-2.6" r="0.75" fill="#ffffff"/>'
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
-                f'keyTimes="0;0.522;0.53;0.538;0.546;0.554;1" {CYC}/>') if twitch else ''
-    return (f'<path d="M-9 0.6 L-15.5 -0.8 M-8.8 2.4 L-15 3 M-8.4 4 L-14 5.4" stroke="{C}" stroke-width="0.7" opacity="0.55" fill="none"/>'
-            f'<g>{ear_anim}<path d="M-7 -3 L-8.6 -12.6 L-1.8 -6.9 Z" fill="{C}"/>'
-            f'<path d="M-6.6 -5 L-7.4 -10.4 L-4 -7.2 Z" fill="{PEACH}" opacity="0.55"/></g>'
-            f'<path d="M-0.2 -7.3 L4.2 -13 L5.4 -5.2 Z" fill="{C}"/>'
-            f'<circle r="7.2" fill="{C}"/>'
-            f'<ellipse cx="-5.6" cy="2" rx="3.6" ry="2.7" fill="{C}"/>'
-            f'<path d="M-7.6 3 L-10.6 4.4 L-7.2 5.6 Z" fill="{C}"/>'
-            f'<path d="M-6.6 -5 L-7.4 -10.4 L-4 -7.2 Z" fill="{PEACH}" opacity="0.55"/>'
-            + eye)
+                f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
+    return (f'<path d="M-9.5 0.8 L-16.5 -0.6 M-9.3 2.6 L-16 3.2 M-8.9 4.2 L-15 5.6" stroke="{C}" stroke-width="0.7" opacity="0.5" fill="none"/>'
+            f'<g>{ear_anim}<path d="M-7.6 -3.4 L-9.4 -14 L-1.4 -7.4 Z" fill="{C}"/>'
+            f'<path d="M-6.9 -5.6 L-7.9 -11.6 L-3.7 -8 Z" fill="{PEACH}" opacity="0.6"/></g>'
+            f'<path d="M-0.2 -7.8 L4.8 -14.2 L6.1 -5.6 Z" fill="{C}"/>'
+            f'<path d="M0.9 -8.2 L4.0 -12.6 L5.0 -7.0 Z" fill="{PEACH}" opacity="0.6"/>'
+            f'<circle r="8" fill="{C}"/>'
+            f'<ellipse cx="-6.2" cy="2.3" rx="4.1" ry="3.1" fill="{C}"/>'
+            f'<path d="M-8.6 3.6 L-12 5.2 L-8.2 6.4 Z" fill="{C}"/>'
+            f'<ellipse cx="-6.6" cy="1.1" rx="2.3" ry="1.5" fill="{PEACH}" opacity="0.4"/>'
+            f'<path d="M-9.6 0.7 L-11.4 1.5 L-9.6 2.4 Z" fill="#F2A0A0"/>'
+            + eye + catch)
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
@@ -381,14 +387,15 @@ def cat_show(season):
     walk = pose.format(v="0;1;0", k="0;0.04;0.15", body=cat_pose_walk())
     dash = pose.format(v="0;1;0;1;0", k="0;0.235;0.30;0.60;0.70", body=cat_pose_dash())
     # landing compression is played by the crouch pose right after each touchdown
-    crouch = pose.format(v="0;1;0;1;0;1;0;1;0", k="0;0.15;0.20;0.34;0.37;0.405;0.435;0.475;0.49",
+    crouch = pose.format(v="0;1;0;1;0;1;0;1;0;0",
+                         k="0;0.15;0.20;0.345;0.362;0.376;0.408;0.423;0.443;1",
                          body=cat_pose_crouch())
     pounce = pose.format(v="0;1;0", k="0;0.20;0.235",
                          body=('<g><animateTransform attributeName="transform" type="translate" '
                                f'values="0 0;0 0;0 -30;0 0;0 0" keyTimes="0;0.20;0.2175;0.235;1" '
                                'calcMode="spline" keySplines="0 0 1 1;0.12 0.88 0.34 1;0.62 0 0.95 0.45;0 0 1 1" '
                                f'{CYC}/>' + cat_pose_pounce() + '</g>'))
-    stand = pose.format(v="0;1;0", k="0;0.30;0.34", body=cat_pose_stand())
+    stand = pose.format(v="0;1;0", k="0;0.30;0.345", body=cat_pose_stand())
 
     def puff(tl):
         """Dust kicked up at touchdown."""
@@ -450,9 +457,9 @@ def cat_show(season):
         # nesting: translate(arc) > rotate(spin, about body-centre) > scale(squash, about feet) > pose swaps
         return f'<g>{arc}<g>{spin}<g>{squash}{rear}{rise}{fall}{touch}</g></g></g>' + puff(e_fl)
 
-    jump1 = jump(0.37, 0.405, 50)
-    jump2 = jump(0.435, 0.475, 66)
-    sit = pose.format(v="0;1;0", k="0;0.49;0.55", body=cat_pose_sit())
+    jump1 = jump(0.362, 0.376, 50)
+    jump2 = jump(0.408, 0.423, 66)
+    sit = pose.format(v="0;1;0", k="0;0.443;0.55", body=cat_pose_sit())
     stretch = pose.format(v="0;1;0", k="0;0.55;0.60", body=cat_pose_stretch())
     flyby = ""
     if season != "winter":
