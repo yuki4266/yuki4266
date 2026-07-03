@@ -220,28 +220,13 @@ def butterfly_patrol(path, dur):
 
 
 # ---------------- cat ----------------
-EYE = "#63D2C3"  # 罗小黑-style teal-green eyes
-
-
 def cat_head(blink=False, twitch=False):
-    # 罗小黑 (Luo Xiaohei) look: round black head, two big teal eyes, small ears.
-    # No muzzle / nose / whiskers — clean and minimal.
-    def eyeball(cx, cy, rx, ry):
-        pr, pry = rx * 0.52, ry * 0.64
-        ba = (f'<animate attributeName="ry" values="{ry};{ry};0.16;{ry}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
-        pa = (f'<animate attributeName="ry" values="{pry:.2f};{pry:.2f};0.1;{pry:.2f}" keyTimes="0;0.9;0.95;1" dur="5.2s" repeatCount="indefinite"/>') if blink else ''
-        return (f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{EYE}">{ba}</ellipse>'
-                f'<ellipse cx="{cx - 0.2}" cy="{cy + 0.4}" rx="{pr:.2f}" ry="{pry:.2f}" fill="#20302C">{pa}</ellipse>'
-                f'<circle cx="{cx - 0.7}" cy="{cy - ry * 0.42:.2f}" r="{rx * 0.32:.2f}" fill="#ffffff"/>')
+    # clean all-black silhouette: round head + small ears, no facial features
     ear_anim = (f'<animateTransform attributeName="transform" type="rotate" values="0;0;15;3;11;0;0" '
                 f'keyTimes="0;0.492;0.50;0.508;0.516;0.524;1" {CYC}/>') if twitch else ''
-    return (f'<g>{ear_anim}<path d="M-7.2 -5 L-6.6 -12.8 L-1.6 -6.8 Z" fill="{C}"/>'
-            f'<path d="M-6.2 -6.4 L-5.8 -10.8 L-3.2 -7.4 Z" fill="{PEACH}" opacity="0.55"/></g>'
+    return (f'<g>{ear_anim}<path d="M-7.2 -5 L-6.6 -12.8 L-1.6 -6.8 Z" fill="{C}"/></g>'
             f'<path d="M1.6 -6.8 L6.4 -12.8 L7 -5 Z" fill="{C}"/>'
-            f'<path d="M2.8 -7.2 L5.7 -10.8 L6.1 -6.4 Z" fill="{PEACH}" opacity="0.55"/>'
-            f'<circle r="8.2" fill="{C}"/>'
-            + eyeball(-4.2, -1.2, 2.7, 3.0)
-            + eyeball(2.2, -1.5, 1.95, 2.5))
+            f'<circle r="8.2" fill="{C}"/>')
 
 
 def cat_leg(x, y, a, b, beg, faded=False):
