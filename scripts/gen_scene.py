@@ -259,6 +259,26 @@ def slim_leg(x1, y1, x2, y2, w=3.2, faded=False):
     return f'<path d="M{x1} {y1} L{x2} {y2}" stroke="{C}" stroke-width="{w}" stroke-linecap="round" fill="none"{op}/>'
 
 
+def tail_anim(keyframes, dur):
+    """Expressive tail rotation from (t, angle) keyframes, eased for organic motion.
+    Rotates about the tail-group origin (its base)."""
+    times = ";".join(f"{t:.3f}" for t, _ in keyframes)
+    vals = ";".join(f"{a:.1f}" for _, a in keyframes)
+    splines = ";".join("0.42 0 0.58 1" for _ in range(len(keyframes) - 1))
+    return (f'<animateTransform attributeName="transform" type="rotate" values="{vals}" '
+            f'keyTimes="{times}" calcMode="spline" keySplines="{splines}" dur="{dur}s" repeatCount="indefinite"/>')
+
+
+# a full "tail language" loop: calm sway -> sharp flick -> big slow swish -> curl & hold -> sway
+TAIL_EXPRESSIVE = [
+    (0.0, -6), (0.04, 5), (0.08, -6), (0.12, 5), (0.16, -6),        # calm sway
+    (0.19, 20), (0.205, -3), (0.22, 17), (0.245, -5),               # sharp flick x2
+    (0.31, 5), (0.40, -7), (0.49, 6), (0.56, -7),                   # sway
+    (0.61, -20), (0.69, 14), (0.77, -17), (0.85, 11),               # big slow swish
+    (0.89, -13), (0.94, -12), (0.98, -8), (1.0, -6),                # curl & settle
+]
+
+
 CAT_BODY = ('M-12.5 -22 C -6 -26.5 6 -27 11.5 -22.5 C 15 -19 15.8 -13.5 13.8 -9.5 C 12.7 -7.6 10.8 -6.6 8.8 -6.6 '
             'L -7 -6.6 C -10 -6.6 -12 -9 -12.9 -12.6 C -13.6 -16.2 -13.5 -19.6 -12.5 -22 Z')
 
@@ -288,7 +308,7 @@ def cat_pose_sit():
             f'keyTimes="0;0.492;0.50;0.51;0.518;1" {CYC}/>')
     return ('<g>'
             f'<g transform="translate(12,-2)"><path d="M0 0 C 3 2.5 -1 4.2 -7 4 C -13.5 3.8 -18 2.2 -19.5 0.2" stroke="{C}" stroke-width="3.4" fill="none" stroke-linecap="round">'.replace("{C}", C)
-            + f'<animateTransform attributeName="transform" type="rotate" values="-7;6;-7" {SPLINE2} dur="2.8s" repeatCount="indefinite"/></path></g>'
+            + tail_anim(TAIL_EXPRESSIVE, 16) + '</path></g>'
             + '<g><animateTransform attributeName="transform" type="scale" values="1 1;1 1.018;1 1" keyTimes="0;0.5;1" dur="3.4s" repeatCount="indefinite"/>'
             + f'<path d="M-9.5 0 C -10.5 -7 -9.5 -15 -5.5 -20.5 C -2.5 -24.5 3.5 -26 8 -23.5 C 12.5 -21 14.5 -15.5 14 -9.5 C 13.7 -5.5 12.8 -2 12 0 Z" fill="{C}"/>'
             + f'<rect x="-9.2" y="-10" width="3.2" height="10" rx="1.5" fill="{C}"/>'
