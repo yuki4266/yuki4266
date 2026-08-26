@@ -46,7 +46,10 @@
 <!-- ============ Stats ============ -->
 <div align="center">
 
-<img height="170em" src="https://streak-stats.demolab.com/?user=yuki4266&hide_border=true&background=00000000&ring=F4795B&fire=F4795B&currStreakLabel=F4795B&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="streak-night.svg" />
+  <img width="495" src="streak.svg" alt="contribution streak" />
+</picture>
 
 </div>
 

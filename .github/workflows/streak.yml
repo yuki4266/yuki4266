@@ -1,0 +1,65 @@
+name: Bake streak card
+
+on:
+  # refresh every 12 hours
+  schedule:
+    - cron: "41 */12 * * *"
+  # allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  BASE: https://streak-stats.demolab.com/?user=yuki4266&hide_border=true&background=00000000&ring=F4795B&fire=F4795B&currStreakLabel=F4795B
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # The public streak-stats instance is often cold or rate-limited, and
+      # GitHub's camo proxy gives up after a few seconds and caches the 504.
+      # So we fetch it here — patiently, with retries — and commit the result.
+      - name: fetch streak cards
+        run: |
+          fetch() {
+            out=$1; url=$2
+            for attempt in 1 2 3 4 5 6; do
+              if curl -sS --max-time 90 -o "$out.tmp" "$url" \
+                && grep -q '<svg' "$out.tmp" \
+                && [ "$(wc -c < "$out.tmp")" -gt 2000 ] \
+                && ! grep -qiE 'something went wrong|maximum retries|rate limit|user not found' "$out.tmp"; then
+                mv "$out.tmp" "$out"
+                echo "$out: ok on attempt $attempt ($(wc -c < "$out") bytes)"
+                return 0
+              fi
+              echo "$out: attempt $attempt failed, backing off ${attempt}0s"
+              sleep "${attempt}0"
+            done
+            rm -f "$out.tmp"
+            echo "$out: all attempts failed — keeping the previous version"
+            return 1
+          }
+
+          ok=0
+          fetch streak.svg       "$BASE&sideLabels=555555&dates=AAAAAA&currStreakNum=333333&sideNums=333333" && ok=1
+          fetch streak-night.svg "$BASE&sideLabels=BBBBBB&dates=8B949E&currStreakNum=E6EDF3&sideNums=E6EDF3" && ok=1
+          # fail the run only if neither card could be refreshed
+          [ "$ok" = 1 ]
+
+      - name: commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- streak.svg streak-night.svg; then
+            echo "streak cards unchanged"
+            exit 0
+          fi
+          git add streak.svg streak-night.svg
+          git commit -m "🔥 streak sync"
+          git push
