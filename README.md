@@ -23,11 +23,11 @@
 <summary>🌱 &nbsp;<b>Field guide</b> — open to read what every chip actually is</summary>
 <br/>
 <div align="center">
-<img src="chips/guide-0.svg?v=372de2f1" alt="AGENTS field guide" /><br/>
-<img src="chips/guide-1.svg?v=209f357e" alt="INFERENCE field guide" /><br/>
-<img src="chips/guide-2.svg?v=d3cda829" alt="TRAINING field guide" /><br/>
-<img src="chips/guide-3.svg?v=04829036" alt="RAG / DATA field guide" /><br/>
-<img src="chips/guide-4.svg?v=083a2857" alt="LANG / OPS field guide" /><br/>
+<img src="chips/guide-0.svg?v=c840696e" alt="AGENTS field guide" /><br/>
+<img src="chips/guide-1.svg?v=ef15772a" alt="INFERENCE field guide" /><br/>
+<img src="chips/guide-2.svg?v=f12a97b7" alt="TRAINING field guide" /><br/>
+<img src="chips/guide-3.svg?v=d5a6a98b" alt="RAG / DATA field guide" /><br/>
+<img src="chips/guide-4.svg?v=d2d28da5" alt="LANG / OPS field guide" /><br/>
 </div>
 </details>
 

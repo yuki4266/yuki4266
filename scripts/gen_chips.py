@@ -9,7 +9,6 @@ import hashlib
 import html
 import random
 import re
-import textwrap
 import urllib.request
 from pathlib import Path
 
@@ -112,8 +111,34 @@ _W = {**{c: 722 for c in "ABCDHKNRU"}, "E": 667, "F": 611, "G": 778, "I": 278, "
       "m": 889, "r": 389, "t": 333, "w": 778, "z": 500, " ": 278, ".": 278, "/": 278, "-": 333, "+": 584}
 
 
-def text_width(s, size):
-    return sum(_W.get(c, 611) for c in s) * size / 1000
+# Arial Regular advance widths, for the guide descriptions (Liberation Sans on Linux shares them)
+_WR = {"A": 667, "B": 667, "C": 722, "D": 722, "E": 667, "F": 611, "G": 778, "H": 722, "I": 278, "J": 500, "K": 667,
+       "L": 556, "M": 833, "N": 722, "O": 778, "P": 667, "Q": 778, "R": 722, "S": 667, "T": 611, "U": 722, "V": 667,
+       "W": 944, "X": 667, "Y": 667, "Z": 611, **{c: 556 for c in "abdeghnopqu"}, **{c: 500 for c in "cksvxyz"},
+       "f": 278, "i": 222, "j": 222, "l": 222, "m": 833, "r": 333, "t": 278, "w": 722, " ": 278, "-": 333, "/": 278,
+       "+": 584, "&": 667, "'": 191, '"': 355, "(": 333, ")": 333, "—": 1000, **{c: 278 for c in ".,:;!"},
+       **{c: 556 for c in "0123456789?"}}
+
+
+def text_width(s, size, table=None):
+    table = table or _W
+    return sum(table.get(c, 1000 if ord(c) > 127 else 611) for c in s) * size / 1000
+
+
+def wrap_px(text, size, max_w):
+    """Greedy word wrap on estimated pixel width, so lines fill the card instead
+    of stopping at a character count that only fills two thirds of it."""
+    lines, cur = [], ""
+    for word in text.split():
+        cand = f"{cur} {word}".strip()
+        if cur and text_width(cand, size, _WR) > max_w:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = cand
+    return lines + [cur] if cur else lines
+
+
 
 
 _icons = {}
@@ -167,28 +192,28 @@ def label_chip(text, petal, centre):
 
 
 def guide(text, petal, centre, chips):
-    """Field-guide card: one row per chip. Everything hangs off a 64px pitch so
+    """Field-guide card: one row per chip. Everything hangs off a 66px pitch so
     the icon tile, title, two description lines and the divider stay centred on
     each other; the card is tinted with the row's own flower colour."""
-    P, X0, X1 = 64, 78, 830
+    P, X0, X1 = 66, 78, 812
     h = 50 + len(chips) * P
     parts = [f'\n<rect x="1" y="1" width="858" height="{h - 2}" rx="14" fill="{petal}" fill-opacity="0.05" stroke="{petal}" stroke-opacity="0.4" stroke-width="1.2"/>\n',
              flower(30, 26, centre, centre, 16) + "\n",
              f'<text x="48" y="30" font-size="11" letter-spacing="2" fill="{GREY}">{html.escape(text)}</text>\n']
     for i, (slug, icon, label, desc) in enumerate(chips):
         y, c = 52 + P * i, CHIP_COLOURS[i % 4]
-        lines = textwrap.wrap(desc, 110, break_on_hyphens=False)
+        lines = wrap_px(desc, 13, X1 - X0 - 30)
         if len(lines) > 2:
-            raise SystemExit(f"{label}: description needs {len(lines)} lines, max 2")
-        tile = f'<rect x="30" y="{y + 6}" width="34" height="34" rx="9" fill="{c}" fill-opacity="0.12"/>'
+            raise SystemExit(f"{label}: description needs {len(lines)} lines, max 2: {lines}")
+        tile = f'<rect x="30" y="{y + 8}" width="34" height="34" rx="9" fill="{c}" fill-opacity="0.12"/>'
         if icon:
-            glyph = f'<g transform="translate(38,{y + 14}) scale(0.75)"><path d="{icon_path(icon)}" fill="{c}"/></g>'
+            glyph = f'<g transform="translate(38,{y + 16}) scale(0.75)"><path d="{icon_path(icon)}" fill="{c}"/></g>'
         else:  # no brand icon: a monogram in the same tile
-            glyph = f'<text x="47" y="{y + 28}" text-anchor="middle" font-size="15" font-weight="700" fill="{c}">{html.escape(label[0].upper())}</text>'
-        body = "".join(f'<text x="{X0}" y="{y + 27 + 16 * k}" font-size="12" fill="{GREY}">{html.escape(l)}</text>' for k, l in enumerate(lines))
-        rule = f'<path d="M{X0} {y + 55} H {X1}" stroke="{c}" stroke-opacity="0.18" stroke-width="1"/>' if i < len(chips) - 1 else ""
+            glyph = f'<text x="47" y="{y + 30}" text-anchor="middle" font-size="15" font-weight="700" fill="{c}">{html.escape(label[0].upper())}</text>'
+        body = "".join(f'<text x="{X0}" y="{y + 29 + 17 * k}" font-size="13" fill="{GREY}">{html.escape(l)}</text>' for k, l in enumerate(lines))
+        rule = f'<path d="M{X0} {y + 57} H {X1}" stroke="{c}" stroke-opacity="0.18" stroke-width="1"/>' if i < len(chips) - 1 else ""
         parts.append(f'<g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="{0.15 + 0.09 * i:.2f}s" dur="0.5s" fill="freeze"/>'
-                     f'{tile}{glyph}<text x="{X0}" y="{y + 10}" font-size="13" font-weight="700" fill="{c}">{html.escape(label)}</text>{body}{rule}</g>\n')
+                     f'{tile}{glyph}<text x="{X0}" y="{y + 11}" font-size="14" font-weight="700" fill="{c}">{html.escape(label)}</text>{body}{rule}</g>\n')
     return svg(860, h, f"{text} field guide", "".join(parts))
 
 
