@@ -9,13 +9,15 @@
 <!-- ============ Tech Garden ============ -->
 <div align="center">
 
-<img src="chips/label-0.svg" alt="AGENTS" /> <img src="chips/claudecode.svg" alt="Claude Code" /> <img src="chips/langgraph.svg" alt="LangGraph" /> <img src="chips/openaiagents.svg" alt="OpenAI Agents" /> <img src="chips/modelcontextprotocol.svg" alt="MCP" /> <img src="chips/agentskills.svg" alt="Agent Skills" /> <img src="chips/dify.svg" alt="Dify" /> <img src="chips/n8n.svg" alt="n8n" />
+<img src="chips/label-0.svg" alt="AGENTS" /> <img src="chips/modelcontextprotocol.svg" alt="MCP" /> <img src="chips/a2a.svg" alt="A2A" /> <img src="chips/agentskills.svg" alt="Agent Skills" /> <img src="chips/langgraph.svg" alt="LangGraph" /> <img src="chips/pydanticai.svg" alt="Pydantic AI" /> <img src="chips/temporal.svg" alt="Temporal" /> <img src="chips/playwright.svg" alt="Playwright" />
 <br/>
-<img src="chips/label-1.svg" alt="INFERENCE" /> <img src="chips/ollama.svg" alt="Ollama" /> <img src="chips/vllm.svg" alt="vLLM" /> <img src="chips/sglang.svg" alt="SGLang" /> <img src="chips/huggingface.svg" alt="Hugging Face" /> <img src="chips/openrouter.svg" alt="OpenRouter" /> <img src="chips/modal.svg" alt="Modal" />
+<img src="chips/label-1.svg" alt="INFERENCE" /> <img src="chips/vllm.svg" alt="vLLM" /> <img src="chips/sglang.svg" alt="SGLang" /> <img src="chips/tensorrtllm.svg" alt="TensorRT-LLM" /> <img src="chips/llamacpp.svg" alt="llama.cpp" /> <img src="chips/mlx.svg" alt="MLX" /> <img src="chips/ray.svg" alt="Ray" /> <img src="chips/modal.svg" alt="Modal" />
 <br/>
-<img src="chips/label-2.svg" alt="RAG / DATA" /> <img src="chips/qdrant.svg" alt="Qdrant" /> <img src="chips/milvus.svg" alt="Milvus" /> <img src="chips/postgresql.svg" alt="pgvector" /> <img src="chips/redis.svg" alt="Redis" /> <img src="chips/supabase.svg" alt="Supabase" />
+<img src="chips/label-2.svg" alt="TRAINING" /> <img src="chips/pytorch.svg" alt="PyTorch" /> <img src="chips/transformers.svg" alt="Transformers" /> <img src="chips/trl.svg" alt="TRL" /> <img src="chips/verl.svg" alt="verl" /> <img src="chips/unsloth.svg" alt="Unsloth" /> <img src="chips/wandb.svg" alt="W&amp;B" /> <img src="chips/cuda.svg" alt="CUDA" />
 <br/>
-<img src="chips/label-3.svg" alt="LANG / OPS" /> <img src="chips/python.svg" alt="Python" /> <img src="chips/uv.svg" alt="uv" /> <img src="chips/typescript.svg" alt="TypeScript" /> <img src="chips/pytorch.svg" alt="PyTorch" /> <img src="chips/fastapi.svg" alt="FastAPI" /> <img src="chips/docker.svg" alt="Docker" /> <img src="chips/kubernetes.svg" alt="Kubernetes" />
+<img src="chips/label-3.svg" alt="RAG / DATA" /> <img src="chips/postgresql.svg" alt="pgvector" /> <img src="chips/qdrant.svg" alt="Qdrant" /> <img src="chips/lancedb.svg" alt="LanceDB" /> <img src="chips/elasticsearch.svg" alt="Elasticsearch" /> <img src="chips/neo4j.svg" alt="Neo4j" /> <img src="chips/duckdb.svg" alt="DuckDB" /> <img src="chips/polars.svg" alt="Polars" />
+<br/>
+<img src="chips/label-4.svg" alt="LANG / OPS" /> <img src="chips/python.svg" alt="Python" /> <img src="chips/uv.svg" alt="uv" /> <img src="chips/rust.svg" alt="Rust" /> <img src="chips/typescript.svg" alt="TypeScript" /> <img src="chips/docker.svg" alt="Docker" /> <img src="chips/kubernetes.svg" alt="Kubernetes" /> <img src="chips/opentelemetry.svg" alt="OpenTelemetry" />
 
 <details>
 <summary>🌱 &nbsp;<b>Field guide</b> — open to read what every chip actually is</summary>
@@ -23,8 +25,9 @@
 <div align="center">
 <img src="chips/guide-0.svg" alt="AGENTS field guide" /><br/>
 <img src="chips/guide-1.svg" alt="INFERENCE field guide" /><br/>
-<img src="chips/guide-2.svg" alt="RAG / DATA field guide" /><br/>
-<img src="chips/guide-3.svg" alt="LANG / OPS field guide" /><br/>
+<img src="chips/guide-2.svg" alt="TRAINING field guide" /><br/>
+<img src="chips/guide-3.svg" alt="RAG / DATA field guide" /><br/>
+<img src="chips/guide-4.svg" alt="LANG / OPS field guide" /><br/>
 </div>
 </details>
 
