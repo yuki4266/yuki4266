@@ -5,6 +5,7 @@ Simple Icons; the README block between the Tech Garden markers is rewritten.
 
     python3 scripts/gen_chips.py
 """
+import hashlib
 import html
 import random
 import re
@@ -165,31 +166,44 @@ def label_chip(text, petal, centre):
                f'<text x="30" y="19" font-size="11" letter-spacing="1.5" fill="{GREY}">{html.escape(text)}</text>')
 
 
-def guide(text, centre, chips):
-    h = len(chips) * 62 + 48
-    parts = [f'\n<rect x="1" y="1" width="858" height="{h - 2}" rx="14" fill="#F4795B" fill-opacity="0.04" stroke="#F4795B" stroke-opacity="0.35" stroke-width="1.2"/>\n',
+def guide(text, petal, centre, chips):
+    """Field-guide card: one row per chip. Everything hangs off a 64px pitch so
+    the icon tile, title, two description lines and the divider stay centred on
+    each other; the card is tinted with the row's own flower colour."""
+    P, X0, X1 = 64, 78, 830
+    h = 50 + len(chips) * P
+    parts = [f'\n<rect x="1" y="1" width="858" height="{h - 2}" rx="14" fill="{petal}" fill-opacity="0.05" stroke="{petal}" stroke-opacity="0.4" stroke-width="1.2"/>\n',
              flower(30, 26, centre, centre, 16) + "\n",
              f'<text x="48" y="30" font-size="11" letter-spacing="2" fill="{GREY}">{html.escape(text)}</text>\n']
     for i, (slug, icon, label, desc) in enumerate(chips):
-        y, c = 50 + 62 * i, CHIP_COLOURS[i % 4]
-        lines = textwrap.wrap(desc, 108)
+        y, c = 52 + P * i, CHIP_COLOURS[i % 4]
+        lines = textwrap.wrap(desc, 110, break_on_hyphens=False)
         if len(lines) > 2:
             raise SystemExit(f"{label}: description needs {len(lines)} lines, max 2")
-        glyph = f'<g transform="translate(38,{y}) scale(0.8)"><path d="{icon_path(icon)}" fill="{c}"/></g>' if icon else ""
-        body = "".join(f'<text x="76" y="{y + 25 + 16 * k}" font-size="12" fill="{GREY}">{html.escape(l)}</text>' for k, l in enumerate(lines))
-        rule = f'<path d="M76 {y + 48} H 820" stroke="{c}" stroke-opacity="0.15" stroke-width="1"/>' if i < len(chips) - 1 else ""
+        tile = f'<rect x="30" y="{y + 6}" width="34" height="34" rx="9" fill="{c}" fill-opacity="0.12"/>'
+        if icon:
+            glyph = f'<g transform="translate(38,{y + 14}) scale(0.75)"><path d="{icon_path(icon)}" fill="{c}"/></g>'
+        else:  # no brand icon: a monogram in the same tile
+            glyph = f'<text x="47" y="{y + 28}" text-anchor="middle" font-size="15" font-weight="700" fill="{c}">{html.escape(label[0].upper())}</text>'
+        body = "".join(f'<text x="{X0}" y="{y + 27 + 16 * k}" font-size="12" fill="{GREY}">{html.escape(l)}</text>' for k, l in enumerate(lines))
+        rule = f'<path d="M{X0} {y + 55} H {X1}" stroke="{c}" stroke-opacity="0.18" stroke-width="1"/>' if i < len(chips) - 1 else ""
         parts.append(f'<g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="{0.15 + 0.09 * i:.2f}s" dur="0.5s" fill="freeze"/>'
-                     f'{glyph}<text x="76" y="{y + 8}" font-size="13" font-weight="700" fill="{c}">{html.escape(label)}</text>{body}{rule}</g>\n')
+                     f'{tile}{glyph}<text x="{X0}" y="{y + 10}" font-size="13" font-weight="700" fill="{c}">{html.escape(label)}</text>{body}{rule}</g>\n')
     return svg(860, h, f"{text} field guide", "".join(parts))
 
 
 def readme_block():
+    """Image URLs carry a content hash: GitHub's image proxy caches by URL, so a
+    regenerated chip under the same path would otherwise stay stale for hours."""
+    def img(name, alt):
+        digest = hashlib.sha1((OUT / name).read_bytes()).hexdigest()[:8]
+        return f'<img src="chips/{name}?v={digest}" alt="{html.escape(alt)}" />'
+
     rows, guides = [], []
     for i, (text, petal, centre, chips) in enumerate(STACK):
-        imgs = [f'<img src="chips/label-{i}.svg" alt="{html.escape(text)}" />']
-        imgs += [f'<img src="chips/{slug}.svg" alt="{html.escape(label)}" />' for slug, _, label, _ in chips]
+        imgs = [img(f"label-{i}.svg", text)] + [img(f"{slug}.svg", label) for slug, _, label, _ in chips]
         rows.append(" ".join(imgs))
-        guides.append(f'<img src="chips/guide-{i}.svg" alt="{html.escape(text)} field guide" /><br/>')
+        guides.append(img(f"guide-{i}.svg", f"{text} field guide") + "<br/>")
     return ('<!-- ============ Tech Garden ============ -->\n<div align="center">\n\n'
             + "\n<br/>\n".join(rows) + "\n\n<details>\n"
             '<summary>🌱 &nbsp;<b>Field guide</b> — open to read what every chip actually is</summary>\n<br/>\n<div align="center">\n'
@@ -204,7 +218,7 @@ def main():
             (OUT / f"{slug}.svg").write_text(chip(slug, icon, label, CHIP_COLOURS[chips.index((slug, icon, label, desc)) % 4]))
             keep.add(f"{slug}.svg")
         (OUT / f"label-{i}.svg").write_text(label_chip(text, petal, centre))
-        (OUT / f"guide-{i}.svg").write_text(guide(text, centre, chips))
+        (OUT / f"guide-{i}.svg").write_text(guide(text, petal, centre, chips))
         keep |= {f"label-{i}.svg", f"guide-{i}.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in keep]
     for p in stale:
