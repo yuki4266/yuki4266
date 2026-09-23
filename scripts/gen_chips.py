@@ -22,22 +22,6 @@ GREY = "#8b949e"
 # (row label, petal colour, centre colour, chips)
 # chip = (file slug, Simple Icons slug or None, label, description)
 STACK = [
-    ("LLMS", "#F4795B", "#E2542F", [
-        ("claude", "claude", "Claude",
-         "Anthropic's model family, strong at coding, long-context reasoning and agentic tool use; Claude Code brings it into the terminal as a coding agent 🌸"),
-        ("openai", "openai", "GPT",
-         "OpenAI's flagship line behind ChatGPT and the Responses API: reasoning models, native tool use, and the open-weight gpt-oss releases for self-hosting."),
-        ("googlegemini", "googlegemini", "Gemini",
-         "Google's natively multimodal model family: text, images, audio and video share one context window, with long-context variants reaching 1M+ tokens."),
-        ("deepseek", "deepseek", "DeepSeek",
-         "Open-weight Mixture-of-Experts models. DeepSeek-R1 popularized RL-trained chain-of-thought reasoning at a fraction of frontier training and inference cost."),
-        ("qwen", "qwen", "Qwen",
-         "Alibaba's open-weight model family: sizes from edge devices to hundreds of billions of parameters, top-tier multilingual coverage, plus Coder and Vision-Language variants."),
-        ("kimi", "kimi", "Kimi",
-         "Moonshot AI's open-weight Kimi K2 line: trillion-parameter Mixture-of-Experts models tuned for long-horizon agentic tool use and coding 🌙"),
-        ("glm", None, "GLM",
-         "Zhipu (Z.ai)'s open-weight GLM series: hybrid thinking modes, strong agentic coding, and MIT-licensed weights that made it a favourite base for self-hosting."),
-    ]),
     ("AGENTS", "#7FA36B", "#5E8B4F", [
         ("claudecode", "claudecode", "Claude Code",
          "Anthropic's terminal-native coding agent, and the Claude Agent SDK underneath it — the same harness, tools and permission model, exposed for building your own agents."),
