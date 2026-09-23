@@ -1,16 +1,8 @@
-<!-- ============ Bloom Header (day / night follows your theme) ============ -->
+<!-- ============ Bloom Header (live weather · day / night follows your theme) ============ -->
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="bloom-header-night.svg" />
     <img src="bloom-header.svg" width="900" alt="yuki4266 — blooming banner" />
-  </picture>
-</div>
-
-<!-- ============ Sky ============ -->
-<div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="sky-night.svg" />
-    <img src="sky.svg" width="900" alt="" />
   </picture>
 </div>
 
