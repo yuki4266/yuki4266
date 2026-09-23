@@ -29,34 +29,16 @@ jobs:
         with:
           ref: main
 
-      # looks up the weather, writes .github/scene-state and the seasonal footer.
-      # The sky strip it also renders is gitignored: the weather is painted into
-      # the header instead, by the step below.
+      # paints the live weather into the banner (between its <!--WEATHER--> markers),
+      # writes bloom-header-night.svg next to it, and draws the seasonal footer
       - uses: yuki4266/living-scene@v1
-        id: scene
         with:
           lat: "35.99"          # Durham, NC
           lon: "-78.90"
           tz: America/New_York
+          header: bloom-header.svg
+          sky: "false"
           weather: ${{ inputs.weather }}
           season: ${{ inputs.season }}
           force: ${{ inputs.force }}
-          commit: "false"
-
-      - name: paint the weather into the header
-        run: python3 .github/scene/bloom.py
-
-      - name: commit if changed
-        env:
-          STATE: ${{ steps.scene.outputs.state }}
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add bloom-header.svg bloom-header-night.svg garden-footer.svg garden-footer-night.svg .github/scene-state
-          if git diff --cached --quiet; then
-            echo "scene unchanged ($STATE)"
-            exit 0
-          fi
-          git commit -m "🌦 scene sync: $STATE"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          commit-message: "🌦 scene sync: {state}"

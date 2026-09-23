@@ -4,6 +4,3 @@ __pycache__/
 venv/
 .DS_Store
 
-# rendered by living-scene but unused: the weather is painted into bloom-header.svg
-sky.svg
-sky-night.svg

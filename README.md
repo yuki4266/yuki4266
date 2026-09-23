@@ -61,4 +61,6 @@
 
 ![Profile Views](https://komarev.com/ghpvc/?username=yuki4266&label=Profile%20views&color=F4795B&style=flat)
 
+<sub>The sky above follows the real forecast and the garden follows the season — powered by <a href="https://github.com/yuki4266/living-scene">living-scene</a>, a GitHub Action you can drop into your own profile.</sub>
+
 </div>
